@@ -11,7 +11,15 @@
       "Bash(node *)",
       "Bash(python3 *)",
       "PowerShell(python \"C:\\\\Users\\\\user\\\\.claude\\\\skills\\\\ui-ux-pro-max\\\\scripts\\\\search.py\" \"personal consulting portfolio brand minimal editorial\" --design-system -p \"Hagai Heshes\" -f markdown 2>&1)",
-      "WebFetch(domain:raw.githubusercontent.com)"
+      "WebFetch(domain:raw.githubusercontent.com)",
+      "Bash(py *)",
+      "PowerShell(python \"C:\\\\Users\\\\user\\\\.claude\\\\skills\\\\ui-ux-pro-max\\\\scripts\\\\search.py\" \"B2B consulting positioning go-to-market personal brand landing page minimal editorial sharp\" --design-system -p \"Hagai Heshes - The Crystallizer\" -f markdown 2>&1)",
+      "Bash(Test-Path *)",
+      "Bash(npx serve *)",
+      "Bash(Read \"C:\\\\Users\\\\user\\\\AppData\\\\Local\\\\Temp\\\\claude\\\\C--Cursor-apps-dad-pro-web\\\\6d16271e-9358-4259-bd7b-a0bc675d369e\\\\tasks\\\\bsqaouokt.output\")",
+      "Bash(npx playwright *)",
+      "Bash(npm install *)",
+      "Bash('.how-section')"
     ]
   }
 }
