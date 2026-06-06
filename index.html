@@ -171,6 +171,12 @@
       border-color: var(--gold);
     }
 
+    .nav-right {
+      display: flex;
+      align-items: center;
+      gap: 36px;
+    }
+
     /* Hamburger */
     .nav-burger {
       display: none;
@@ -245,7 +251,7 @@
     }
 
     @media (max-width: 720px) {
-      .nav-links, .nav-cta { display: none; }
+      .nav-right { display: none; }
       .nav-burger { display: flex; }
       .nav-inner { padding: 0 20px; }
     }
@@ -1071,12 +1077,14 @@
       <span class="nav-logo-name">Hagai Heshes</span>
     </a>
 
-    <ul class="nav-links" role="list">
-      <li><a href="#work">Work</a></li>
-      <li><a href="#how">Approach</a></li>
-      <li><a href="#about">About</a></li>
-      <li><a href="#contact" class="nav-cta">Get in touch</a></li>
-    </ul>
+    <div class="nav-right">
+      <ul class="nav-links" role="list">
+        <li><a href="#work">Work</a></li>
+        <li><a href="#how">Approach</a></li>
+        <li><a href="#about">About</a></li>
+      </ul>
+      <a href="#contact" class="nav-cta">Get in touch</a>
+    </div>
 
     <button class="nav-burger" id="nav-burger" aria-label="Open menu" aria-expanded="false">
       <span></span><span></span><span></span>
@@ -1097,7 +1105,7 @@
 
 <!-- HERO -->
 <section class="hero" id="hero" aria-label="Introduction">
-  <div class="hero-text wrap">
+  <div class="hero-text">
     <div class="hero-eyebrow">
       <span class="hero-eyebrow-line" aria-hidden="true"></span>
       <span class="t-label">Positioning &amp; Go-to-Market</span>
