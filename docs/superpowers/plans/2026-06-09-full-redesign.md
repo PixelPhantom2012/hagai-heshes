@@ -1,0 +1,1795 @@
+# Full Redesign Implementation Plan
+
+> **For agentic workers:** REQUIRED SUB-SKILL: Use superpowers:subagent-driven-development (recommended) or superpowers:executing-plans to implement this plan task-by-task. Steps use checkbox (`- [ ]`) syntax for tracking.
+
+**Goal:** Fully rewrite `index.html` with a Navy + Indigo design system, Bricolage Grotesque typography, and a comprehensive animation layer.
+
+**Architecture:** Single `index.html` file — all CSS in one `<style>` block, all JS in one IIFE `<script>`. Built section-by-section top to bottom; animations added in a dedicated final phase. No build step, no npm, no framework.
+
+**Tech Stack:** Vanilla HTML5, CSS (OKLCH, custom properties, clamp(), IntersectionObserver), Vanilla JS, Google Fonts (Bricolage Grotesque)
+
+---
+
+## File Structure
+
+| File | Action | Responsibility |
+|------|--------|---------------|
+| `index.html` | Full rewrite | Entire page: HTML structure, `<style>` block, `<script>` block |
+
+---
+
+## Task 1: Foundation — `<head>`, tokens, reset, base typography
+
+**Files:**
+- Modify: `index.html` (replace everything — start fresh from `<!DOCTYPE html>`)
+
+- [ ] **Step 1: Replace `index.html` with the new foundation**
+
+Replace the entire file content with:
+
+```html
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Hagai Heshes: The Crystallizer</title>
+  <meta name="description" content="Positioning and go-to-market for companies that cannot afford to be misunderstood. Hagai Heshes distills what you're really about, then helps you take it to market.">
+
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,300;12..96,400;12..96,500;12..96,600;12..96,700;12..96,800&display=swap" rel="stylesheet">
+
+  <style>
+    /* ── Tokens ── */
+    :root {
+      --navy:        oklch(13% 0.04 265);
+      --indigo:      oklch(50% 0.2 268);
+      --indigo-mid:  oklch(58% 0.18 268);
+      --indigo-dim:  oklch(66% 0.15 268);
+      --indigo-bg:   oklch(96% 0.02 268);
+      --bg:          oklch(98.5% 0.005 265);
+      --bg-alt:      oklch(96.5% 0.008 265);
+      --text-body:   oklch(38% 0.04 265);
+      --text-dim:    oklch(52% 0.05 265);
+      --text-faint:  oklch(62% 0.04 265);
+      --line:        oklch(89% 0.015 265);
+      --dark-bg:     oklch(10% 0.03 265);
+      --dark-bg2:    oklch(7%  0.02 265);
+      --maxw:        1120px;
+      --nav-h:       64px;
+      --r:           6px;
+      --ease-spring: cubic-bezier(0.16, 1, 0.3, 1);
+      --ease-out:    cubic-bezier(0.23, 1, 0.32, 1);
+      --ease-in-out: cubic-bezier(0.77, 0, 0.175, 1);
+    }
+
+    /* ── Reset ── */
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    html { scroll-behavior: smooth; font-size: 16px; }
+
+    body {
+      font-family: 'Bricolage Grotesque', system-ui, sans-serif;
+      background: var(--bg);
+      color: var(--text-body);
+      -webkit-font-smoothing: antialiased;
+      overflow-x: hidden;
+      -webkit-tap-highlight-color: transparent;
+    }
+
+    a { color: inherit; text-decoration: none; }
+    img { display: block; max-width: 100%; }
+
+    :focus-visible {
+      outline: 2px solid var(--indigo);
+      outline-offset: 3px;
+      border-radius: 2px;
+    }
+
+    .t-label {
+      font-size: 10px;
+      font-weight: 600;
+      letter-spacing: 0.14em;
+      text-transform: uppercase;
+      color: var(--indigo);
+      opacity: 0.7;
+    }
+
+    .wrap {
+      max-width: var(--maxw);
+      margin: 0 auto;
+      padding: 0 48px;
+    }
+    @media (max-width: 600px) { .wrap { padding: 0 20px; } }
+
+    section[id] { scroll-margin-top: var(--nav-h); }
+
+  </style>
+</head>
+<body>
+
+<!-- sections go here -->
+
+<script>
+(function () {
+  /* JS goes here in Task 15 */
+})();
+</script>
+
+</body>
+</html>
+```
+
+- [ ] **Step 2: Open `index.html` in browser — verify blank page loads, no console errors, Bricolage Grotesque font loads (check in DevTools → Network → Fonts)**
+
+- [ ] **Step 3: Commit**
+
+```bash
+git add index.html
+git commit -m "feat: foundation — new tokens, reset, Bricolage Grotesque"
+```
+
+---
+
+## Task 2: Nav HTML + CSS
+
+**Files:**
+- Modify: `index.html` — add nav HTML after `<body>`, add CSS to `<style>`
+
+- [ ] **Step 1: Add nav CSS inside `<style>` (before closing `</style>`)**
+
+```css
+/* ── NAV ── */
+.nav {
+  position: sticky;
+  top: 0;
+  z-index: 200;
+  height: var(--nav-h);
+  background: oklch(98.5% 0.005 265 / 0.88);
+  backdrop-filter: saturate(160%) blur(16px);
+  -webkit-backdrop-filter: saturate(160%) blur(16px);
+  border-bottom: 1px solid var(--line);
+  transition: background 0.25s var(--ease-out), box-shadow 0.25s var(--ease-out);
+}
+.nav.scrolled {
+  background: oklch(98.5% 0.005 265 / 0.97);
+  box-shadow: 0 1px 0 var(--line), 0 4px 24px oklch(13% 0.04 265 / 0.06);
+}
+.nav-inner {
+  max-width: var(--maxw);
+  margin: 0 auto;
+  padding: 0 48px;
+  height: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+.nav-logo {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  font-size: 15px;
+  font-weight: 700;
+  color: var(--navy);
+  letter-spacing: -0.035em;
+}
+.nav-logo-mark { width: 22px; height: 22px; flex-shrink: 0; }
+.nav-right { display: flex; align-items: center; gap: 32px; }
+.nav-links { display: flex; align-items: center; gap: 24px; list-style: none; }
+.nav-links a {
+  font-size: 13px;
+  font-weight: 400;
+  color: var(--text-dim);
+  letter-spacing: -0.01em;
+  transition: color 0.15s var(--ease-out);
+  min-height: 44px;
+  display: inline-flex;
+  align-items: center;
+}
+.nav-links a:hover { color: var(--navy); }
+.nav-links a.active { color: var(--navy); font-weight: 500; }
+.nav-cta {
+  position: relative;
+  overflow: hidden;
+  font-size: 12px;
+  font-weight: 600;
+  color: #fff;
+  background: var(--indigo);
+  border-radius: var(--r);
+  padding: 8px 20px;
+  letter-spacing: -0.01em;
+  min-height: 36px;
+  display: inline-flex;
+  align-items: center;
+  transition: background 0.22s var(--ease-out), transform 0.15s var(--ease-out);
+}
+.nav-cta:hover { background: var(--navy); transform: translateY(-1px); }
+.nav-cta:active { transform: scale(0.97); }
+.nav-cta span { position: relative; z-index: 1; }
+
+.nav-burger {
+  display: none;
+  flex-direction: column;
+  gap: 5px;
+  cursor: pointer;
+  padding: 11px 8px;
+  background: none;
+  border: none;
+  min-width: 44px;
+  min-height: 44px;
+  align-items: center;
+  justify-content: center;
+  touch-action: manipulation;
+}
+.nav-burger span {
+  display: block;
+  width: 20px;
+  height: 1.5px;
+  background: var(--navy);
+  border-radius: 2px;
+  transition: transform 0.28s var(--ease-spring), opacity 0.2s var(--ease-out);
+}
+.nav-burger.open span:nth-child(1) { transform: translateY(6.5px) rotate(45deg); }
+.nav-burger.open span:nth-child(2) { opacity: 0; transform: scaleX(0); }
+.nav-burger.open span:nth-child(3) { transform: translateY(-6.5px) rotate(-45deg); }
+
+.mobile-drawer {
+  position: fixed;
+  top: var(--nav-h);
+  left: 0; right: 0;
+  background: var(--bg);
+  border-bottom: 1px solid var(--line);
+  padding: 20px 20px 28px;
+  z-index: 199;
+  transform: translateY(-100%);
+  opacity: 0;
+  transition: transform 0.35s var(--ease-spring), opacity 0.22s var(--ease-out);
+  pointer-events: none;
+}
+.mobile-drawer.open { transform: translateY(0); opacity: 1; pointer-events: auto; }
+.mobile-drawer nav { display: flex; flex-direction: column; gap: 2px; }
+.mobile-drawer a {
+  font-size: 15px;
+  color: var(--text-body);
+  padding: 12px 8px;
+  border-radius: var(--r);
+  transition: color 0.15s var(--ease-out), background 0.15s var(--ease-out);
+  border-bottom: 1px solid var(--line);
+  min-height: 44px;
+  display: flex;
+  align-items: center;
+  touch-action: manipulation;
+}
+.mobile-drawer a:last-child { border-bottom: none; }
+.mobile-drawer a:hover { color: var(--navy); background: var(--bg-alt); }
+.mobile-drawer .drawer-cta {
+  margin-top: 16px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: var(--indigo);
+  color: #fff;
+  padding: 14px 24px;
+  border-radius: var(--r);
+  font-size: 13.5px;
+  font-weight: 600;
+  min-height: 48px;
+  touch-action: manipulation;
+  letter-spacing: -0.01em;
+  transition: background 0.18s var(--ease-out), transform 0.15s var(--ease-out);
+}
+.mobile-drawer .drawer-cta:active { transform: scale(0.97); }
+
+@media (max-width: 720px) {
+  .nav-right { display: none; }
+  .nav-burger { display: flex; }
+  .nav-inner { padding: 0 20px; }
+}
+@media (min-width: 721px) { .mobile-drawer { display: none; } }
+```
+
+- [ ] **Step 2: Add nav HTML (replace `<!-- sections go here -->` comment with)**
+
+```html
+<!-- NAV -->
+<header class="nav" id="site-nav">
+  <div class="nav-inner">
+    <a href="#" class="nav-logo" aria-label="Hagai Heshes — Home">
+      <svg class="nav-logo-mark" id="nav-crystal" viewBox="0 0 28 28" width="22" height="22" fill="none" aria-hidden="true">
+        <g transform="translate(14,14)">
+          <polygon points="0,-11 -5.5,-4 0,-2" fill="var(--indigo)" fill-opacity="0.22"/>
+          <polygon points="0,-11 5.5,-4 0,-2" fill="var(--indigo)" fill-opacity="0.45"/>
+          <polygon points="-5.5,-4 -7,5.5 0,7 0,-2" fill="var(--indigo)" fill-opacity="0.32"/>
+          <polygon points="5.5,-4 7,5.5 0,7 0,-2" fill="var(--indigo)" fill-opacity="0.72"/>
+          <polygon points="-7,5.5 0,11 0,7" fill="var(--indigo)" fill-opacity="0.18"/>
+          <polygon points="7,5.5 0,11 0,7" fill="var(--indigo)" fill-opacity="0.62"/>
+          <polygon points="0,-11 5.5,-4 7,5.5 0,11 -7,5.5 -5.5,-4" stroke="var(--indigo)" stroke-opacity="0.45" stroke-width="0.5"/>
+        </g>
+      </svg>
+      <span>Hagai Heshes</span>
+    </a>
+
+    <div class="nav-right">
+      <ul class="nav-links" role="list">
+        <li><a href="#work">Work</a></li>
+        <li><a href="#how">Approach</a></li>
+        <li><a href="#about">About</a></li>
+      </ul>
+      <a href="#contact" class="nav-cta"><span>Get in touch</span></a>
+    </div>
+
+    <button class="nav-burger" id="nav-burger" aria-label="Open menu" aria-expanded="false">
+      <span></span><span></span><span></span>
+    </button>
+  </div>
+</header>
+
+<!-- Mobile drawer -->
+<div class="mobile-drawer" id="mobile-drawer" aria-hidden="true">
+  <nav>
+    <a href="#work">Work</a>
+    <a href="#how">Approach</a>
+    <a href="#about">About</a>
+  </nav>
+  <a href="#contact" class="drawer-cta">Get in touch</a>
+</div>
+
+<!-- sections go here -->
+```
+
+- [ ] **Step 3: Verify in browser — nav is sticky at top, crystal SVG is indigo, CTA button is indigo, links are visible. On mobile width (<720px) nav links hide and burger appears.**
+
+- [ ] **Step 4: Commit**
+
+```bash
+git add index.html
+git commit -m "feat: nav — sticky header, indigo crystal, mobile drawer"
+```
+
+---
+
+## Task 3: Hero HTML + CSS
+
+**Files:**
+- Modify: `index.html`
+
+- [ ] **Step 1: Add hero CSS inside `<style>`**
+
+```css
+/* ── HERO ── */
+.hero {
+  min-height: calc(100svh - var(--nav-h));
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  align-items: center;
+  max-width: var(--maxw);
+  margin: 0 auto;
+  padding: 0 48px;
+  gap: 64px;
+}
+.hero-text { padding: 80px 0; }
+
+.hero-badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  background: var(--indigo-bg);
+  border: 1px solid oklch(50% 0.2 268 / 0.2);
+  color: var(--indigo);
+  font-size: 11px;
+  font-weight: 600;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  padding: 5px 14px 5px 10px;
+  border-radius: 100px;
+  margin-bottom: 44px;
+}
+.badge-dot {
+  width: 6px;
+  height: 6px;
+  background: var(--indigo);
+  border-radius: 50%;
+  flex-shrink: 0;
+  animation: badge-pulse 2.5s ease-in-out infinite;
+}
+@keyframes badge-pulse {
+  0%, 100% { opacity: 1; }
+  50% { opacity: 0.3; }
+}
+
+/* Split-text word containers */
+.hero-title-word {
+  display: inline-block;
+  overflow: hidden;
+  vertical-align: bottom;
+}
+.hero-title-word-inner {
+  display: inline-block;
+  opacity: 0;
+  transform: translateY(100%);
+  transition: opacity 0.6s var(--ease-spring), transform 0.6s var(--ease-spring);
+}
+body.loaded .hero-title-word-inner { opacity: 1; transform: translateY(0); }
+
+.hero-tagline-word {
+  display: inline-block;
+  overflow: hidden;
+  vertical-align: bottom;
+}
+.hero-tagline-word-inner {
+  display: inline-block;
+  opacity: 0;
+  transform: translateY(100%);
+  transition: opacity 0.55s var(--ease-spring), transform 0.55s var(--ease-spring);
+}
+body.loaded .hero-tagline-word-inner { opacity: 1; transform: translateY(0); }
+
+.hero-title {
+  font-size: clamp(64px, 7.5vw, 96px);
+  font-weight: 800;
+  color: var(--navy);
+  line-height: 0.9;
+  letter-spacing: -0.05em;
+  margin-bottom: 28px;
+}
+.hero-title .the {
+  display: block;
+  font-weight: 300;
+  font-size: 0.52em;
+  letter-spacing: -0.03em;
+  color: var(--text-dim);
+  margin-bottom: 2px;
+}
+.hero-title .main {
+  display: block;
+  color: var(--indigo);
+}
+
+.hero-tagline {
+  font-size: clamp(17px, 1.6vw, 20px);
+  font-weight: 400;
+  color: var(--text-body);
+  line-height: 1.5;
+  margin-bottom: 14px;
+  letter-spacing: -0.02em;
+}
+.hero-lede {
+  font-size: 15px;
+  color: var(--text-dim);
+  line-height: 1.75;
+  max-width: 44ch;
+  margin-bottom: 52px;
+  font-weight: 400;
+  opacity: 0;
+  transform: translateY(24px);
+  transition: opacity 0.65s var(--ease-spring), transform 0.65s var(--ease-spring);
+}
+body.loaded .hero-lede { opacity: 1; transform: translateY(0); }
+
+.hero-actions {
+  display: flex;
+  gap: 14px;
+  align-items: center;
+  flex-wrap: wrap;
+  opacity: 0;
+  transform: translateY(20px);
+  transition: opacity 0.6s var(--ease-spring), transform 0.6s var(--ease-spring);
+}
+body.loaded .hero-actions { opacity: 1; transform: translateY(0); }
+
+.btn-primary {
+  position: relative;
+  overflow: hidden;
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  background: var(--indigo);
+  color: #fff;
+  font-family: inherit;
+  font-size: 13px;
+  font-weight: 600;
+  padding: 13px 26px;
+  border-radius: var(--r);
+  letter-spacing: -0.01em;
+  min-height: 44px;
+  touch-action: manipulation;
+  transition: background 0.22s var(--ease-out), transform 0.15s var(--ease-out), box-shadow 0.22s var(--ease-out);
+  box-shadow: 0 4px 16px oklch(50% 0.2 268 / 0.28);
+}
+.btn-primary:hover {
+  background: var(--navy);
+  transform: translateY(-2px);
+  box-shadow: 0 8px 28px oklch(50% 0.2 268 / 0.35);
+}
+.btn-primary:active { transform: scale(0.97); }
+.btn-primary svg { transition: transform 0.22s var(--ease-spring); }
+.btn-primary:hover svg { transform: translateX(4px); }
+
+.btn-ghost {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  color: var(--text-dim);
+  font-family: inherit;
+  font-size: 13px;
+  font-weight: 500;
+  padding-bottom: 2px;
+  border-bottom: 1px solid var(--line);
+  letter-spacing: -0.01em;
+  min-height: 44px;
+  align-items: center;
+  touch-action: manipulation;
+  transition: color 0.15s var(--ease-out), border-color 0.15s var(--ease-out);
+}
+.btn-ghost:hover { color: var(--navy); border-color: var(--navy); }
+.btn-ghost:active { transform: scale(0.98); }
+
+/* Photo column */
+.hero-photo-col {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 48px 0;
+  opacity: 0;
+  transition: opacity 1s var(--ease-out) 0.45s;
+}
+body.loaded .hero-photo-col { opacity: 1; }
+
+.photo-frame {
+  position: relative;
+  width: 100%;
+  max-width: 380px;
+}
+.photo-bg-shape {
+  position: absolute;
+  inset: -28px -28px -28px -12px;
+  background: var(--indigo-bg);
+  border-radius: 24px;
+  z-index: 0;
+}
+.photo-main {
+  position: relative;
+  z-index: 1;
+  width: 100%;
+  aspect-ratio: 3/4;
+  object-fit: cover;
+  object-position: top center;
+  border-radius: 16px;
+  display: block;
+  box-shadow: 0 24px 60px oklch(13% 0.04 265 / 0.18);
+}
+.photo-name-tag {
+  position: absolute;
+  bottom: -18px;
+  left: 50%;
+  transform: translateX(-50%);
+  background: oklch(99% 0.003 265);
+  border: 1px solid var(--line);
+  border-radius: 100px;
+  padding: 8px 22px;
+  font-size: 12px;
+  font-weight: 600;
+  color: var(--navy);
+  white-space: nowrap;
+  z-index: 2;
+  box-shadow: 0 4px 16px oklch(13% 0.04 265 / 0.08);
+  letter-spacing: -0.02em;
+}
+
+/* Hero eyebrow entrance */
+.hero-badge {
+  opacity: 0;
+  transform: translateX(-16px);
+  transition: opacity 0.5s var(--ease-out), transform 0.6s var(--ease-spring);
+}
+body.loaded .hero-badge { opacity: 1; transform: translateX(0); transition-delay: 0.04s; }
+
+/* Nav entrance */
+.nav { opacity: 0; transition: opacity 0.35s var(--ease-out) 0.06s, background 0.25s var(--ease-out), box-shadow 0.25s var(--ease-out); }
+body.loaded .nav { opacity: 1; }
+
+@media (max-width: 860px) {
+  .hero { grid-template-columns: 1fr; min-height: auto; padding: 0 20px; gap: 0; }
+  .hero-text { padding: 64px 0 44px; }
+  .hero-photo-col { padding: 0 0 56px; }
+  .photo-frame { max-width: 320px; }
+}
+@media (max-width: 720px) {
+  .hero-photo-col { display: none; }
+}
+```
+
+- [ ] **Step 2: Add hero HTML (replace `<!-- sections go here -->` comment)**
+
+```html
+<!-- HERO -->
+<section class="hero" id="hero" aria-label="Introduction">
+  <div class="hero-text">
+    <div class="hero-badge">
+      <span class="badge-dot" aria-hidden="true"></span>
+      Positioning &amp; Go-to-Market
+    </div>
+    <h1 class="hero-title" id="hero-title">
+      <span class="the">The</span>
+      <span class="main">Crystallizer</span>
+    </h1>
+    <p class="hero-tagline" id="hero-tagline">
+      You know what you've built. I make sure everyone else does too.
+    </p>
+    <p class="hero-lede">
+      Positioning and go-to-market for companies that can't afford to be misunderstood. I distill what you're really about, then help you take it to market.
+    </p>
+    <div class="hero-actions">
+      <a href="#contact" class="btn-primary">
+        <span>Let's talk</span>
+        <svg width="14" height="14" viewBox="0 0 14 14" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M2 7h10M8 3l4 4-4 4"/></svg>
+      </a>
+      <a href="#work" class="btn-ghost">See my work</a>
+    </div>
+  </div>
+
+  <div class="hero-photo-col" aria-hidden="true">
+    <div class="photo-frame">
+      <div class="photo-bg-shape"></div>
+      <img class="photo-main" src="logos/hagai.jpeg" alt="Portrait of Hagai Heshes" width="380" height="507" loading="eager">
+      <span class="photo-name-tag">Hagai Heshes</span>
+    </div>
+  </div>
+</section>
+
+<!-- sections go here -->
+```
+
+- [ ] **Step 3: Verify in browser — hero fills viewport, "The" is light weight + text-dim, "Crystallizer" is bold indigo, photo shows with indigo-bg shape behind it, badge has pulsing dot. Elements are invisible (opacity 0) because `body.loaded` isn't set yet — that's correct.**
+
+- [ ] **Step 4: Commit**
+
+```bash
+git add index.html
+git commit -m "feat: hero section — split layout, indigo title, photo frame"
+```
+
+---
+
+## Task 4: Statement Strip
+
+**Files:**
+- Modify: `index.html`
+
+- [ ] **Step 1: Add strip CSS inside `<style>`**
+
+```css
+/* ── STATEMENT STRIP ── */
+.statement-section {
+  background: var(--dark-bg);
+  border-top: 1px solid oklch(50% 0.2 268 / 0.3);
+  border-bottom: 1px solid oklch(50% 0.2 268 / 0.3);
+  overflow: hidden;
+}
+.statement-marquee-track {
+  display: flex;
+  width: max-content;
+  animation: marquee 26s linear infinite;
+  padding: 28px 0;
+}
+.statement-marquee-track:hover { animation-play-state: paused; }
+.statement-marquee-item {
+  display: flex;
+  align-items: center;
+  gap: 56px;
+  padding: 0 56px;
+  white-space: nowrap;
+  flex-shrink: 0;
+}
+.statement-text {
+  font-size: clamp(15px, 1.5vw, 18px);
+  font-weight: 400;
+  color: oklch(94% 0.005 265 / 0.65);
+  letter-spacing: -0.02em;
+}
+.statement-text em { font-style: italic; color: var(--indigo-dim); }
+.statement-diamond {
+  display: inline-block;
+  width: 4px;
+  height: 4px;
+  background: oklch(50% 0.2 268 / 0.6);
+  border-radius: 50%;
+  flex-shrink: 0;
+}
+@keyframes marquee {
+  from { transform: translateX(0); }
+  to   { transform: translateX(-50%); }
+}
+```
+
+- [ ] **Step 2: Add strip HTML (replace `<!-- sections go here -->`)**
+
+```html
+<!-- STATEMENT STRIP -->
+<div class="statement-section" aria-label="Mission statement">
+  <div class="statement-marquee-track" aria-hidden="true">
+    <div class="statement-marquee-item">
+      <p class="statement-text">The world is full of great products that never found their people. I fix <em>that</em>.</p>
+      <span class="statement-diamond"></span>
+    </div>
+    <div class="statement-marquee-item">
+      <p class="statement-text">Clarity is a competitive advantage. Most companies don't have it.</p>
+      <span class="statement-diamond"></span>
+    </div>
+    <div class="statement-marquee-item">
+      <p class="statement-text">If you can't explain what you do in a sentence, your customers can't either.</p>
+      <span class="statement-diamond"></span>
+    </div>
+    <div class="statement-marquee-item">
+      <p class="statement-text">The world is full of great products that never found their people. I fix <em>that</em>.</p>
+      <span class="statement-diamond"></span>
+    </div>
+    <div class="statement-marquee-item">
+      <p class="statement-text">Clarity is a competitive advantage. Most companies don't have it.</p>
+      <span class="statement-diamond"></span>
+    </div>
+    <div class="statement-marquee-item">
+      <p class="statement-text">If you can't explain what you do in a sentence, your customers can't either.</p>
+      <span class="statement-diamond"></span>
+    </div>
+  </div>
+</div>
+
+<!-- sections go here -->
+```
+
+- [ ] **Step 3: Verify — dark strip with scrolling text on navy bg, indigo-dim italic em words, marquee pauses on hover.**
+
+- [ ] **Step 4: Commit**
+
+```bash
+git add index.html
+git commit -m "feat: statement strip — navy bg, marquee, indigo accents"
+```
+
+---
+
+## Task 5: Pillars Section
+
+**Files:**
+- Modify: `index.html`
+
+- [ ] **Step 1: Add pillars CSS inside `<style>`**
+
+```css
+/* ── PILLARS ── */
+.pillars-section {
+  background: var(--bg);
+  border-bottom: 1px solid var(--line);
+}
+.pillars-inner {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  max-width: var(--maxw);
+  margin: 0 auto;
+}
+.pillar {
+  padding: 72px 56px;
+  border-right: 1px solid var(--line);
+  position: relative;
+}
+.pillar:last-child { border-right: none; }
+.pillar::before {
+  content: '';
+  position: absolute;
+  top: 0; left: 0; right: 0;
+  height: 3px;
+  background: var(--indigo);
+  transform: scaleX(0);
+  transform-origin: left;
+  transition: transform 0.32s var(--ease-spring);
+}
+.pillar:hover::before { transform: scaleX(1); }
+.pillar-num {
+  font-size: 10px;
+  font-weight: 600;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: var(--indigo);
+  opacity: 0.55;
+  margin-bottom: 28px;
+  display: block;
+}
+.pillar-title {
+  font-size: clamp(26px, 2.4vw, 34px);
+  font-weight: 700;
+  letter-spacing: -0.04em;
+  color: var(--navy);
+  margin-bottom: 16px;
+  line-height: 1.05;
+}
+.pillar-body {
+  font-size: 15px;
+  line-height: 1.75;
+  color: var(--text-dim);
+  max-width: 36ch;
+}
+
+@media (max-width: 680px) {
+  .pillars-inner { grid-template-columns: 1fr; }
+  .pillar { border-right: none; border-bottom: 1px solid var(--line); padding: 44px 20px; }
+  .pillar:last-child { border-bottom: none; }
+}
+```
+
+- [ ] **Step 2: Add pillars HTML**
+
+```html
+<!-- PILLARS -->
+<section class="pillars-section" id="services">
+  <div class="pillars-inner">
+    <div class="pillar reveal">
+      <span class="pillar-num">01</span>
+      <h2 class="pillar-title">Crystallization</h2>
+      <p class="pillar-body">
+        I absorb everything about your company and compress it into something essential: what you are, who you're truly for, why you win, and how to talk about it.
+      </p>
+    </div>
+    <div class="pillar reveal" style="transition-delay:0.1s">
+      <span class="pillar-num">02</span>
+      <h2 class="pillar-title">Go-to-Market</h2>
+      <p class="pillar-body">
+        Once the foundation is solid, we go on the attack: the right motion, channels, and sequence to take it to market.
+      </p>
+    </div>
+  </div>
+</section>
+
+<!-- sections go here -->
+```
+
+- [ ] **Step 3: Verify — two columns with number, title, body. Hover over a pillar and verify the indigo top border slides in from left.**
+
+- [ ] **Step 4: Commit**
+
+```bash
+git add index.html
+git commit -m "feat: pillars section — two-column, indigo hover border"
+```
+
+---
+
+## Task 6: Clients Section
+
+**Files:**
+- Modify: `index.html`
+
+- [ ] **Step 1: Add clients CSS inside `<style>`**
+
+```css
+/* ── CLIENTS ── */
+.clients-section {
+  background: var(--bg-alt);
+  border-bottom: 1px solid var(--line);
+}
+.clients-header {
+  padding: 56px 48px 28px;
+  max-width: var(--maxw);
+  margin: 0 auto;
+  display: flex;
+  align-items: baseline;
+  justify-content: space-between;
+  gap: 24px;
+}
+.clients-header h2 {
+  font-size: clamp(18px, 2vw, 24px);
+  font-weight: 700;
+  letter-spacing: -0.04em;
+  color: var(--navy);
+}
+.clients-logos {
+  max-width: var(--maxw);
+  margin: 0 auto;
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  border-top: 1px solid var(--line);
+  border-left: 1px solid var(--line);
+}
+.client-logo {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 32px 24px;
+  border-right: 1px solid var(--line);
+  border-bottom: 1px solid var(--line);
+  transition: background 0.22s var(--ease-out);
+  cursor: default;
+}
+.client-logo:hover { background: var(--bg); }
+.client-logo img {
+  height: 28px;
+  width: auto;
+  object-fit: contain;
+  filter: grayscale(100%);
+  opacity: 0.35;
+  transition: opacity 0.3s var(--ease-out), filter 0.3s var(--ease-out), transform 0.25s var(--ease-spring);
+}
+.client-logo:hover img { opacity: 0.9; filter: grayscale(0%); transform: scale(1.05); }
+
+@media (max-width: 600px) {
+  .clients-logos { grid-template-columns: repeat(2, 1fr); }
+  .clients-header { padding: 44px 20px 20px; flex-direction: column; gap: 6px; }
+}
+```
+
+- [ ] **Step 2: Add clients HTML**
+
+```html
+<!-- CLIENTS -->
+<section class="clients-section" id="work">
+  <div class="clients-header reveal">
+    <h2>Selected clients</h2>
+    <span class="t-label">Portfolio</span>
+  </div>
+  <div class="clients-logos stagger">
+    <div class="client-logo"><img src="logos/tytocare_logo-removebg-preview.png" alt="TytoCare" loading="lazy" height="28"></div>
+    <div class="client-logo"><img src="logos/quantalx_logo-removebg-preview.png" alt="QuantalX" loading="lazy" height="28"></div>
+    <div class="client-logo"><img src="logos/neurolief_logo-removebg-preview.png" alt="Neurolief" loading="lazy" height="28"></div>
+    <div class="client-logo"><img src="logos/Band-Logo.webp" alt="BAND.ai" loading="lazy" height="28"></div>
+    <div class="client-logo"><img src="logos/wd_logo-removebg-preview.png" alt="Western Digital" loading="lazy" height="28"></div>
+    <div class="client-logo"><img src="logos/seagate_logo-removebg-preview.png" alt="Seagate" loading="lazy" height="28"></div>
+    <div class="client-logo"><img src="logos/monday_logo-removebg-preview.png" alt="Monday.com" loading="lazy" height="28"></div>
+    <div class="client-logo"><img src="logos/wix_logo-removebg-preview.png" alt="Wix" loading="lazy" height="28"></div>
+  </div>
+</section>
+
+<!-- sections go here -->
+```
+
+- [ ] **Step 3: Verify — 4-column logo grid, logos are grayscale/faint, hover reveals color + slight scale.**
+
+- [ ] **Step 4: Commit**
+
+```bash
+git add index.html
+git commit -m "feat: clients section — 4-column logo grid, hover color reveal"
+```
+
+---
+
+## Task 7: How I Work + Deliverables Sections
+
+**Files:**
+- Modify: `index.html`
+
+- [ ] **Step 1: Add CSS for both sections**
+
+```css
+/* ── HOW I WORK ── */
+.how-section {
+  background: var(--bg);
+  border-bottom: 1px solid var(--line);
+}
+.how-inner {
+  max-width: var(--maxw);
+  margin: 0 auto;
+  padding: 96px 48px;
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 88px;
+  align-items: start;
+}
+.how-label-col { padding-top: 8px; }
+.how-title {
+  font-size: clamp(36px, 4.5vw, 56px);
+  font-weight: 700;
+  letter-spacing: -0.045em;
+  color: var(--navy);
+  line-height: 1.0;
+  margin-top: 18px;
+}
+.how-body p {
+  font-size: 15.5px;
+  line-height: 1.82;
+  color: var(--text-body);
+  margin-bottom: 20px;
+  max-width: 50ch;
+}
+.how-body p:last-child { margin-bottom: 0; }
+
+@media (max-width: 720px) {
+  .how-inner { grid-template-columns: 1fr; gap: 32px; padding: 64px 20px; }
+}
+
+/* ── DELIVERABLES ── */
+.deliv-section {
+  background: var(--bg);
+  border-bottom: 1px solid var(--line);
+}
+.deliv-inner {
+  max-width: var(--maxw);
+  margin: 0 auto;
+  padding: 80px 48px;
+  display: grid;
+  grid-template-columns: 260px 1fr;
+  gap: 88px;
+  align-items: start;
+}
+.deliv-label-col { padding-top: 4px; }
+.deliv-title {
+  font-size: clamp(20px, 2.4vw, 28px);
+  font-weight: 700;
+  letter-spacing: -0.035em;
+  color: var(--navy);
+  line-height: 1.15;
+  margin-top: 14px;
+}
+.deliv-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 44px 60px; }
+.deliv-group-title {
+  font-size: 15px;
+  font-weight: 600;
+  font-style: italic;
+  color: var(--navy);
+  padding-bottom: 12px;
+  border-bottom: 1px solid var(--line);
+  letter-spacing: -0.02em;
+}
+.deliv-list { list-style: none; display: flex; flex-direction: column; }
+.deliv-list li {
+  font-size: 13.5px;
+  color: var(--text-dim);
+  line-height: 1.6;
+  display: flex;
+  align-items: flex-start;
+  gap: 14px;
+  padding: 12px 0;
+  border-bottom: 1px solid var(--line);
+}
+.deliv-list li:last-child { border-bottom: none; padding-bottom: 0; }
+.deliv-list li::before {
+  content: '';
+  display: block;
+  width: 4px;
+  height: 4px;
+  border-radius: 50%;
+  background: var(--indigo);
+  opacity: 0.6;
+  flex-shrink: 0;
+  margin-top: 6px;
+}
+
+@media (max-width: 720px) {
+  .deliv-inner { grid-template-columns: 1fr; gap: 36px; padding: 56px 20px; }
+  .deliv-grid { grid-template-columns: 1fr; gap: 36px; }
+}
+```
+
+- [ ] **Step 2: Add How I Work + Deliverables HTML**
+
+```html
+<!-- HOW I WORK -->
+<section class="how-section" id="how">
+  <div class="how-inner">
+    <div class="how-label-col reveal">
+      <span class="t-label" style="display:block;margin-bottom:18px;">Approach</span>
+      <h2 class="how-title">How I<br>work</h2>
+    </div>
+    <div class="how-body reveal" style="transition-delay:0.12s">
+      <p>I work with a small number of clients at a time. Deeply, not broadly.</p>
+      <p>No fluff, no shelfware. I move fast, get to the essential quickly, and leave you with something you can actually use.</p>
+      <p>Most clients come through referral.</p>
+    </div>
+  </div>
+</section>
+
+<!-- DELIVERABLES -->
+<section class="deliv-section" id="deliverables">
+  <div class="deliv-inner">
+    <div class="deliv-label-col reveal">
+      <span class="t-label" style="display:block;margin-bottom:14px;">Deliverables</span>
+      <h2 class="deliv-title">What you walk away with</h2>
+    </div>
+    <div class="deliv-grid stagger">
+      <div class="deliv-group">
+        <div class="deliv-group-title">Crystallization</div>
+        <ul class="deliv-list">
+          <li>Positioning and messaging framework</li>
+          <li>Value propositions</li>
+          <li>Company and product narrative</li>
+          <li>Investor story</li>
+        </ul>
+      </div>
+      <div class="deliv-group">
+        <div class="deliv-group-title">Go-to-Market</div>
+        <ul class="deliv-list">
+          <li>GTM strategy and plan</li>
+          <li>Sales deck</li>
+          <li>Website copy</li>
+          <li>Sales enablement materials</li>
+        </ul>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- sections go here -->
+```
+
+- [ ] **Step 3: Verify both sections — two-column layout with label left, content right. Deliverable lists with indigo dot markers.**
+
+- [ ] **Step 4: Commit**
+
+```bash
+git add index.html
+git commit -m "feat: how I work + deliverables sections"
+```
+
+---
+
+## Task 8: About + Contact + Footer + Scroll-Top
+
+**Files:**
+- Modify: `index.html`
+
+- [ ] **Step 1: Add CSS for about, contact, footer, scroll-top**
+
+```css
+/* ── ABOUT ── */
+.about-section {
+  background: var(--bg-alt);
+  border-bottom: 1px solid var(--line);
+}
+.about-inner {
+  max-width: var(--maxw);
+  margin: 0 auto;
+  padding: 88px 48px;
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 72px;
+  align-items: start;
+}
+.about-rule {
+  display: block;
+  width: 32px;
+  height: 2px;
+  background: var(--indigo);
+  margin-bottom: 28px;
+  opacity: 0.5;
+}
+.about-title {
+  font-size: clamp(24px, 2.8vw, 36px);
+  font-weight: 700;
+  letter-spacing: -0.04em;
+  color: var(--navy);
+  line-height: 1.1;
+  margin-top: 16px;
+}
+.about-body p {
+  font-size: 15.5px;
+  line-height: 1.82;
+  color: var(--text-body);
+  margin-bottom: 20px;
+}
+.about-body p:last-child { margin-bottom: 0; }
+
+@media (max-width: 720px) {
+  .about-inner { grid-template-columns: 1fr; gap: 36px; padding: 56px 20px; }
+}
+
+/* ── CONTACT ── */
+.contact-section {
+  background: var(--dark-bg);
+  border-top: 1px solid oklch(100% 0 0 / 0.06);
+  position: relative;
+  overflow: hidden;
+}
+.contact-bg-crystal {
+  position: absolute;
+  right: -80px;
+  top: 50%;
+  transform: translateY(-50%);
+  opacity: 0.04;
+  pointer-events: none;
+}
+.contact-inner {
+  position: relative;
+  max-width: var(--maxw);
+  margin: 0 auto;
+  padding: 96px 48px;
+  display: grid;
+  grid-template-columns: 1fr auto;
+  gap: 64px;
+  align-items: center;
+  z-index: 1;
+}
+.contact-headline {
+  font-size: clamp(40px, 5.5vw, 68px);
+  font-weight: 800;
+  line-height: 1.0;
+  letter-spacing: -0.05em;
+  color: oklch(94% 0.005 265);
+  margin-bottom: 22px;
+}
+.contact-headline em { font-style: italic; color: var(--indigo-dim); }
+.contact-sub {
+  font-size: 15px;
+  line-height: 1.8;
+  color: oklch(60% 0.02 265);
+  max-width: 44ch;
+  margin-bottom: 40px;
+}
+.contact-links { display: flex; gap: 12px; flex-wrap: wrap; }
+.contact-email {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  background: var(--indigo);
+  color: #fff;
+  font-size: 13px;
+  font-weight: 600;
+  padding: 15px 26px;
+  border-radius: var(--r);
+  letter-spacing: -0.01em;
+  min-height: 48px;
+  touch-action: manipulation;
+  transition: background 0.22s var(--ease-out), transform 0.15s var(--ease-out);
+  box-shadow: 0 4px 20px oklch(50% 0.2 268 / 0.4);
+}
+.contact-email:hover { background: oklch(58% 0.18 268); transform: translateY(-2px); }
+.contact-email:active { transform: scale(0.97); }
+.contact-email svg { transition: transform 0.22s var(--ease-spring); }
+.contact-email:hover svg { transform: translateX(4px); }
+.contact-whatsapp {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  border: 1px solid oklch(100% 0 0 / 0.14);
+  color: oklch(60% 0.02 265);
+  font-size: 13px;
+  font-weight: 400;
+  padding: 15px 26px;
+  border-radius: var(--r);
+  transition: border-color 0.18s var(--ease-out), color 0.18s var(--ease-out), transform 0.15s var(--ease-out);
+  min-height: 48px;
+  touch-action: manipulation;
+}
+.contact-whatsapp:hover { border-color: oklch(100% 0 0 / 0.32); color: oklch(92% 0.005 265); }
+.contact-whatsapp:active { transform: scale(0.97); }
+.contact-crystal-col { opacity: 0.08; flex-shrink: 0; }
+
+@media (max-width: 860px) {
+  .contact-inner { grid-template-columns: 1fr; gap: 0; padding: 72px 20px; }
+  .contact-crystal-col { display: none; }
+}
+@media (max-width: 480px) {
+  .contact-links { flex-direction: column; align-items: stretch; }
+  .contact-email, .contact-whatsapp { justify-content: center; }
+}
+
+/* ── FOOTER ── */
+.footer { background: var(--dark-bg2); border-top: 1px solid oklch(100% 0 0 / 0.05); }
+.footer-inner {
+  max-width: var(--maxw);
+  margin: 0 auto;
+  padding: 22px 48px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 16px;
+}
+.footer-copy { font-size: 11px; color: oklch(44% 0.01 265); }
+.footer-nav { display: flex; gap: 24px; }
+.footer-nav a {
+  font-size: 11px;
+  color: oklch(44% 0.01 265);
+  transition: color 0.15s var(--ease-out);
+  padding: 6px 2px;
+  min-height: 44px;
+  display: inline-flex;
+  align-items: center;
+}
+.footer-nav a:hover { color: oklch(62% 0.015 265); }
+
+@media (max-width: 480px) {
+  .footer-inner { flex-direction: column; gap: 10px; text-align: center; padding: 18px 20px; }
+  .footer-nav { gap: 16px; flex-wrap: wrap; justify-content: center; }
+}
+@media (max-width: 720px) { .footer-inner { padding: 18px 20px; } }
+
+/* ── SCROLL-TO-TOP ── */
+.scroll-top {
+  position: fixed;
+  bottom: 28px; right: 28px;
+  z-index: 100;
+  width: 44px; height: 44px;
+  border-radius: 50%;
+  background: var(--bg);
+  border: 1px solid var(--line);
+  color: var(--text-dim);
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  opacity: 0;
+  transform: translateY(12px);
+  transition: opacity 0.25s var(--ease-out), transform 0.28s var(--ease-spring), background 0.15s var(--ease-out);
+  pointer-events: none;
+  touch-action: manipulation;
+  box-shadow: 0 2px 12px oklch(13% 0.04 265 / 0.08);
+}
+.scroll-top.visible { opacity: 1; transform: translateY(0); pointer-events: auto; }
+.scroll-top:hover { background: var(--indigo-bg); color: var(--indigo); }
+.scroll-top:active { transform: scale(0.95); }
+```
+
+- [ ] **Step 2: Add about + contact + footer + scroll-top HTML (replace `<!-- sections go here -->`)**
+
+```html
+<!-- ABOUT -->
+<section class="about-section" id="about">
+  <div class="about-inner">
+    <div class="reveal">
+      <span class="t-label" style="display:block;margin-bottom:14px;">About</span>
+      <span class="about-rule" aria-hidden="true"></span>
+      <h2 class="about-title">Twenty years of making things clear.</h2>
+    </div>
+    <div class="about-body reveal" style="transition-delay:0.1s">
+      <p>
+        Twenty years of GTM experience across Fortune 500 enterprises and startups: B2B, B2B2C and D2C, spanning healthcare, tech, defense and beyond. I know the U.S. market from the inside, having lived and worked there for over a decade.
+      </p>
+      <p>
+        My background is an unusual mix: Computer Science, a Master's in Psychology from UPenn, and a career spent at the intersection of strategic clarity and human insight. I understand not just markets, but the people in them.
+      </p>
+    </div>
+  </div>
+</section>
+
+<!-- CONTACT -->
+<section class="contact-section" id="contact">
+  <div class="contact-bg-crystal" aria-hidden="true">
+    <svg width="540" height="700" viewBox="0 0 260 340" fill="none">
+      <g transform="translate(130,170)">
+        <polygon points="0,-150 -72,-55 0,-30" fill="var(--indigo)" opacity="0.18"/>
+        <polygon points="0,-150 72,-55 0,-30" fill="var(--indigo)" opacity="0.38"/>
+        <polygon points="-72,-55 -90,72 0,95 0,-30" fill="var(--indigo)" opacity="0.25"/>
+        <polygon points="72,-55 90,72 0,95 0,-30" fill="var(--indigo)" opacity="0.55"/>
+        <polygon points="-90,72 0,150 0,95" fill="var(--indigo)" opacity="0.12"/>
+        <polygon points="90,72 0,150 0,95" fill="var(--indigo)" opacity="0.62"/>
+        <polygon points="0,-150 72,-55 90,72 0,150 -90,72 -72,-55" stroke="var(--indigo)" stroke-opacity="0.35" stroke-width="0.75" fill="none"/>
+      </g>
+    </svg>
+  </div>
+
+  <div class="contact-inner">
+    <div class="reveal">
+      <h2 class="contact-headline">
+        If this sounds like<br>what you <em>need</em>,<br>let's talk.
+      </h2>
+      <p class="contact-sub">
+        I work with a small number of clients. If you're building something and can't afford to be misunderstood, reach out.
+      </p>
+      <div class="contact-links">
+        <a href="https://mail.google.com/mail/?view=cm&to=hagaiheshes@gmail.com" target="_blank" rel="noopener noreferrer" class="contact-email">
+          <span>hagaiheshes@gmail.com</span>
+          <svg width="14" height="14" viewBox="0 0 14 14" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M2 7h10M8 3l4 4-4 4"/></svg>
+        </a>
+        <a href="https://wa.me/972532851277" class="contact-whatsapp" target="_blank" rel="noopener noreferrer" aria-label="Contact via WhatsApp">
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413z"/></svg>
+          WhatsApp
+        </a>
+      </div>
+    </div>
+
+    <div class="contact-crystal-col" aria-hidden="true">
+      <svg width="160" height="210" viewBox="0 0 260 340" fill="none">
+        <g transform="translate(130,170)">
+          <polygon points="0,-150 -72,-55 0,-30" fill="var(--indigo)" opacity="0.18"/>
+          <polygon points="0,-150 72,-55 0,-30" fill="var(--indigo)" opacity="0.38"/>
+          <polygon points="-72,-55 -90,72 0,95 0,-30" fill="var(--indigo)" opacity="0.25"/>
+          <polygon points="72,-55 90,72 0,95 0,-30" fill="var(--indigo)" opacity="0.55"/>
+          <polygon points="-90,72 0,150 0,95" fill="var(--indigo)" opacity="0.12"/>
+          <polygon points="90,72 0,150 0,95" fill="var(--indigo)" opacity="0.62"/>
+          <polygon points="0,-150 72,-55 90,72 0,150 -90,72 -72,-55" stroke="var(--indigo)" stroke-opacity="0.35" stroke-width="0.75" fill="none"/>
+        </g>
+      </svg>
+    </div>
+  </div>
+</section>
+
+<!-- FOOTER -->
+<footer class="footer">
+  <div class="footer-inner">
+    <span class="footer-copy">&#169; 2026 Hagai Heshes. All rights reserved.</span>
+    <nav class="footer-nav" aria-label="Footer navigation">
+      <a href="#work">Work</a>
+      <a href="#how">Approach</a>
+      <a href="#about">About</a>
+      <a href="#contact">Contact</a>
+    </nav>
+  </div>
+</footer>
+
+<!-- Scroll-to-top -->
+<button class="scroll-top" id="scroll-top" aria-label="Back to top">
+  <svg width="14" height="14" viewBox="0 0 14 14" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M7 11V3M3 7l4-4 4 4"/></svg>
+</button>
+```
+
+- [ ] **Step 3: Verify — full page visible top to bottom. About: two-column, indigo rule. Contact: dark navy bg, indigo email button, crystal SVG. Footer: very dark bg. Scroll-top button hidden (correct — JS not yet added).**
+
+- [ ] **Step 4: Commit**
+
+```bash
+git add index.html
+git commit -m "feat: about, contact, footer, scroll-top button — full page structure complete"
+```
+
+---
+
+## Task 9: Scroll Reveal CSS
+
+**Files:**
+- Modify: `index.html` — add animation CSS classes
+
+- [ ] **Step 1: Add scroll reveal + reduced-motion CSS inside `<style>`**
+
+```css
+/* ── SCROLL REVEAL ── */
+.reveal {
+  opacity: 0;
+  transform: translateY(40px);
+  transition: opacity 0.75s var(--ease-spring), transform 0.75s var(--ease-spring);
+  will-change: opacity, transform;
+}
+.reveal.in-view { opacity: 1; transform: translateY(0); }
+
+.reveal-left {
+  opacity: 0;
+  transform: translateX(-28px);
+  transition: opacity 0.75s var(--ease-spring), transform 0.75s var(--ease-spring);
+}
+.reveal-left.in-view { opacity: 1; transform: translateX(0); }
+
+.stagger > * {
+  opacity: 0;
+  transform: translateY(24px);
+  transition: opacity 0.65s var(--ease-spring), transform 0.65s var(--ease-spring);
+}
+.stagger.in-view > *:nth-child(1) { opacity: 1; transform: none; transition-delay: 0ms; }
+.stagger.in-view > *:nth-child(2) { opacity: 1; transform: none; transition-delay: 60ms; }
+.stagger.in-view > *:nth-child(3) { opacity: 1; transform: none; transition-delay: 120ms; }
+.stagger.in-view > *:nth-child(4) { opacity: 1; transform: none; transition-delay: 180ms; }
+.stagger.in-view > *:nth-child(5) { opacity: 1; transform: none; transition-delay: 240ms; }
+.stagger.in-view > *:nth-child(6) { opacity: 1; transform: none; transition-delay: 300ms; }
+.stagger.in-view > *:nth-child(7) { opacity: 1; transform: none; transition-delay: 360ms; }
+.stagger.in-view > *:nth-child(8) { opacity: 1; transform: none; transition-delay: 420ms; }
+
+/* ── CRYSTAL PARALLAX ── */
+.crystal-parallax {
+  display: block;
+  transform-origin: center center;
+  will-change: transform;
+}
+
+/* ── REDUCED MOTION ── */
+@media (prefers-reduced-motion: reduce) {
+  *, *::before, *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+  }
+  .hero-title-word-inner,
+  .hero-tagline-word-inner,
+  .hero-lede,
+  .hero-actions,
+  .hero-badge,
+  .hero-photo-col,
+  .nav {
+    opacity: 1 !important;
+    transform: none !important;
+  }
+  body.loaded .hero-title-word-inner,
+  body.loaded .hero-tagline-word-inner { opacity: 1; transform: none; }
+  .reveal, .reveal-left, .stagger > * { opacity: 1; transform: none; }
+}
+```
+
+- [ ] **Step 2: Add `crystal-parallax` class to nav crystal SVG** — change the SVG tag:
+
+```html
+<svg class="nav-logo-mark crystal-parallax" id="nav-crystal" ...>
+```
+
+- [ ] **Step 3: Verify — no visual change yet (JS not added). Check DevTools that `.reveal` elements have opacity:0 on the pillar and clients sections.**
+
+- [ ] **Step 4: Commit**
+
+```bash
+git add index.html
+git commit -m "feat: scroll reveal CSS + reduced-motion support"
+```
+
+---
+
+## Task 10: JavaScript — Complete IIFE
+
+**Files:**
+- Modify: `index.html` — replace the empty `<script>` placeholder
+
+- [ ] **Step 1: Replace the `<script>` block with the complete IIFE**
+
+```html
+<script>
+(function () {
+  var prefersReduced = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+
+  /* ── Page load entrance ── */
+  window.addEventListener('load', function () {
+    document.body.classList.add('loaded');
+  });
+
+  /* ── Split-text hero title (word-by-word reveal) ── */
+  function splitTitle(el, baseDelay) {
+    if (!el) return;
+    var nodes = el.childNodes;
+    var wordIndex = 0;
+    var fragment = '';
+
+    function wrapText(text, delay) {
+      var words = text.split(' ');
+      var result = '';
+      words.forEach(function (w, i) {
+        if (!w) return;
+        var d = delay + wordIndex * 60;
+        result += '<span class="hero-title-word"><span class="hero-title-word-inner" style="transition-delay:' + d + 'ms">' + w + '</span></span>';
+        if (i < words.length - 1) result += ' ';
+        wordIndex++;
+      });
+      return result;
+    }
+
+    nodes.forEach(function (node) {
+      if (node.nodeType === 3) {
+        fragment += wrapText(node.textContent, baseDelay);
+      } else if (node.nodeName === 'BR') {
+        fragment += '<br>';
+        wordIndex = 0;
+      } else if (node.nodeName === 'SPAN') {
+        var cls = node.className;
+        var inner = wrapText(node.textContent, baseDelay + wordIndex * 60);
+        fragment += '<span class="' + cls + '">' + inner + '</span>';
+      } else if (node.nodeName === 'EM') {
+        var inner = wrapText(node.textContent, baseDelay + wordIndex * 60);
+        fragment += '<em>' + inner + '</em>';
+      }
+    });
+    el.innerHTML = fragment;
+  }
+
+  function splitTagline(el, baseDelay) {
+    if (!el) return;
+    var text = el.textContent;
+    var words = text.split(' ');
+    var output = '';
+    words.forEach(function (w, i) {
+      if (!w) return;
+      var d = baseDelay + i * 55;
+      output += '<span class="hero-tagline-word"><span class="hero-tagline-word-inner" style="transition-delay:' + d + 'ms">' + w + '</span></span>';
+      if (i < words.length - 1) output += ' ';
+    });
+    el.innerHTML = output;
+  }
+
+  if (!prefersReduced) {
+    splitTitle(document.getElementById('hero-title'), 140);
+    splitTagline(document.getElementById('hero-tagline'), 420);
+
+    var heroLede = document.querySelector('.hero-lede');
+    if (heroLede) heroLede.style.transitionDelay = '0.56s';
+
+    var heroActions = document.querySelector('.hero-actions');
+    if (heroActions) heroActions.style.transitionDelay = '0.64s';
+  } else {
+    var heroTitle = document.getElementById('hero-title');
+    var heroTagline = document.getElementById('hero-tagline');
+    if (heroTitle) { heroTitle.style.opacity = '1'; heroTitle.style.transform = 'none'; }
+    if (heroTagline) { heroTagline.style.opacity = '1'; heroTagline.style.transform = 'none'; }
+  }
+
+  /* ── Scroll reveals ── */
+  var revealEls = document.querySelectorAll('.reveal, .reveal-left, .stagger');
+  if ('IntersectionObserver' in window) {
+    var isMobile = window.matchMedia('(max-width: 720px)').matches;
+    var io = new IntersectionObserver(function (entries) {
+      entries.forEach(function (e) {
+        if (e.isIntersecting) {
+          e.target.classList.add('in-view');
+          io.unobserve(e.target);
+        }
+      });
+    }, {
+      threshold: isMobile ? 0.05 : 0.08,
+      rootMargin: isMobile ? '0px 0px -10px 0px' : '0px 0px -40px 0px'
+    });
+    revealEls.forEach(function (el) { io.observe(el); });
+  } else {
+    revealEls.forEach(function (el) { el.classList.add('in-view'); });
+  }
+
+  /* ── Nav scroll shadow ── */
+  var nav = document.getElementById('site-nav');
+  var navScrolled = false;
+  window.addEventListener('scroll', function () {
+    var past = window.scrollY > 80;
+    if (past !== navScrolled) {
+      navScrolled = past;
+      nav.classList.toggle('scrolled', navScrolled);
+    }
+  }, { passive: true });
+
+  /* ── Crystal mouse parallax ── */
+  if (!prefersReduced) {
+    var lerpX = 0, lerpY = 0, lerpR = 0;
+    var targetX = 0, targetY = 0, targetR = 0;
+
+    document.addEventListener('mousemove', function (e) {
+      var cx = window.innerWidth / 2;
+      var cy = window.innerHeight / 2;
+      var dx = (e.clientX - cx) / cx;
+      var dy = (e.clientY - cy) / cy;
+      targetX = dx * 8;
+      targetY = dy * 6;
+      targetR = dx * 4;
+    });
+
+    function lerp(a, b, t) { return a + (b - a) * t; }
+
+    function tickParallax() {
+      lerpX = lerp(lerpX, targetX, 0.06);
+      lerpY = lerp(lerpY, targetY, 0.06);
+      lerpR = lerp(lerpR, targetR, 0.06);
+
+      var navCrystal = document.getElementById('nav-crystal');
+      if (navCrystal) {
+        navCrystal.style.transform = 'translate(' + (lerpX * 0.3).toFixed(2) + 'px, ' + (lerpY * 0.3).toFixed(2) + 'px) rotate(' + (lerpR * 0.5).toFixed(2) + 'deg)';
+      }
+      requestAnimationFrame(tickParallax);
+    }
+    requestAnimationFrame(tickParallax);
+  }
+
+  /* ── Mobile drawer ── */
+  var burger = document.getElementById('nav-burger');
+  var drawer = document.getElementById('mobile-drawer');
+  var isOpen = false;
+
+  function toggleDrawer(open) {
+    isOpen = open;
+    burger.classList.toggle('open', isOpen);
+    drawer.classList.toggle('open', isOpen);
+    burger.setAttribute('aria-expanded', String(isOpen));
+    drawer.setAttribute('aria-hidden', String(!isOpen));
+  }
+
+  burger.addEventListener('click', function () { toggleDrawer(!isOpen); });
+  drawer.querySelectorAll('a').forEach(function (a) {
+    a.addEventListener('click', function () { toggleDrawer(false); });
+  });
+  document.addEventListener('click', function (e) {
+    if (isOpen && !drawer.contains(e.target) && !burger.contains(e.target)) {
+      toggleDrawer(false);
+    }
+  });
+
+  /* ── Scroll-to-top ── */
+  var scrollBtn = document.getElementById('scroll-top');
+  window.addEventListener('scroll', function () {
+    scrollBtn.classList.toggle('visible', window.scrollY > 500);
+  }, { passive: true });
+  scrollBtn.addEventListener('click', function () {
+    window.scrollTo({ top: 0, behavior: 'smooth' });
+  });
+
+  /* ── Active nav links ── */
+  var sections = document.querySelectorAll('section[id]');
+  var navAs = document.querySelectorAll('.nav-links a');
+  if ('IntersectionObserver' in window) {
+    var sectionIo = new IntersectionObserver(function (entries) {
+      entries.forEach(function (e) {
+        if (e.isIntersecting) {
+          var id = e.target.id;
+          navAs.forEach(function (a) {
+            a.classList.toggle('active', a.getAttribute('href') === '#' + id);
+          });
+        }
+      });
+    }, { threshold: 0.3, rootMargin: '-64px 0px -40% 0px' });
+    sections.forEach(function (s) { sectionIo.observe(s); });
+  }
+
+})();
+</script>
+```
+
+- [ ] **Step 2: Verify in browser (hard refresh):**
+  - Hero loads with entrance animation — badge slides in, title words rise up one by one, tagline follows, then lede + CTAs
+  - Nav fades in
+  - Scroll down — sections fade/slide in as they enter the viewport
+  - Logo grid staggers (each logo appears with 60ms delay)
+  - Nav shadow appears after scrolling 80px
+  - Scroll-to-top button appears after 500px
+  - Crystal in nav subtly follows mouse
+
+- [ ] **Step 3: Commit**
+
+```bash
+git add index.html
+git commit -m "feat: JS — page load entrance, scroll reveals, parallax, drawer, scroll-top, active nav"
+```
+
+---
+
+## Task 11: Final Polish + Accessibility Pass
+
+**Files:**
+- Modify: `index.html`
+
+- [ ] **Step 1: Verify all touch targets are 44px+ minimum**
+
+Check in DevTools (inspect each nav link, all buttons, drawer links, scroll-top). They should all have `min-height: 44px` already from the CSS above. If any are smaller, add `min-height: 44px; display: inline-flex; align-items: center;` to that element's CSS rule.
+
+- [ ] **Step 2: Verify `aria-*` attributes are present**
+
+Open DevTools → Accessibility tree and confirm:
+- `<header>` has `id="site-nav"`
+- Burger button: `aria-label="Open menu"`, `aria-expanded="false"` (JS will toggle to `"true"`)
+- Mobile drawer: `aria-hidden="true"` (JS toggles)
+- Contact links: WhatsApp link has `aria-label="Contact via WhatsApp"`
+- Hero section: `aria-label="Introduction"`
+- Statement strip: `aria-hidden="true"` on marquee track
+
+- [ ] **Step 3: Test `prefers-reduced-motion`**
+
+In Chrome DevTools → Rendering → Emulate CSS media feature → `prefers-reduced-motion: reduce`. Reload. Verify:
+- No entrance animation on hero — elements are visible immediately
+- Marquee still visible but frozen (animation-duration: 0.01ms is near-instant, effectively static)
+- Scroll reveals: elements are visible immediately (opacity: 1, transform: none)
+
+- [ ] **Step 4: Test mobile layout at 375px width**
+
+In DevTools device mode at 375px:
+- Nav: only logo + burger, no links
+- Hero: single column, photo hidden
+- Pillars: single column
+- Clients: 2-column grid
+- All sections have 20px horizontal padding
+
+- [ ] **Step 5: Commit**
+
+```bash
+git add index.html
+git commit -m "chore: accessibility + responsive verification pass"
+```
+
+---
+
+## Self-Review
+
+**Spec coverage check:**
+
+| Spec requirement | Covered in task |
+|---|---|
+| Bricolage Grotesque font | Task 1 |
+| Navy/indigo token system (OKLCH) | Task 1 |
+| Nav — sticky, indigo crystal, mobile drawer | Task 2 |
+| Hero — split layout, badge, word-split title, photo frame | Task 3 |
+| Statement strip — navy bg, marquee | Task 4 |
+| Pillars — indigo hover border reveal | Task 5 |
+| Clients — 4-col grid, grayscale logos | Task 6 |
+| How I Work + Deliverables | Task 7 |
+| About + Contact (dark) + Footer + Scroll-top | Task 8 |
+| Scroll reveal CSS + reduced-motion | Task 9 |
+| All JS (entrance, reveals, parallax, drawer, nav, scroll-top) | Task 10 |
+| Accessibility (44px targets, aria, reduced-motion test, mobile) | Task 11 |
+| No gradient text (absolute ban) | Enforced — title uses solid `var(--indigo)` |
+| No gold anywhere | Enforced — gold token removed |
+| Crystal SVG in indigo | Tasks 2, 8 |
+
+**Placeholder scan:** No TBD, no TODO, no "similar to Task N". All code blocks are complete.
+
+**Type consistency:** CSS class names consistent throughout — `.hero-title-word`, `.hero-title-word-inner`, `.hero-tagline-word`, `.hero-tagline-word-inner`, `.hero-badge`, `.hero-lede`, `.hero-actions`, `.btn-primary`, `.btn-ghost`. JS references match HTML IDs (`hero-title`, `hero-tagline`, `nav-burger`, `mobile-drawer`, `nav-crystal`, `scroll-top`, `site-nav`).
