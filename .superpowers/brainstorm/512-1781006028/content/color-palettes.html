@@ -1,0 +1,223 @@
+<!DOCTYPE html>
+<html lang="he" dir="rtl">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>פלטות צבע</title>
+<style>
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  body {
+    font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+    background: #0a0a0a;
+    color: #fff;
+    min-height: 100vh;
+    padding: 40px 24px 80px;
+  }
+  h1 { text-align: center; font-size: 22px; font-weight: 600; margin-bottom: 8px; letter-spacing: -0.02em; }
+  .subtitle { text-align: center; color: #888; font-size: 14px; margin-bottom: 40px; }
+
+  .cards-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 20px;
+    max-width: 1000px;
+    margin: 0 auto;
+  }
+  @media (max-width: 720px) { .cards-grid { grid-template-columns: 1fr; } }
+
+  .card {
+    border-radius: 14px;
+    overflow: hidden;
+    cursor: pointer;
+    border: 2px solid transparent;
+    transition: border-color 0.2s, transform 0.18s;
+    background: #1a1a1a;
+  }
+  .card:hover { transform: translateY(-4px); }
+  .card.selected { border-color: #6ee7b7; box-shadow: 0 0 0 4px rgba(110,231,183,0.15); }
+
+  .preview { height: 320px; position: relative; overflow: hidden; }
+
+  .card-label {
+    padding: 16px 18px;
+    background: #161616;
+    border-top: 1px solid #222;
+  }
+  .card-label h3 { font-size: 15px; font-weight: 600; color: #fff; margin-bottom: 5px; }
+  .card-label p { font-size: 12px; color: #777; line-height: 1.5; }
+
+  .sel-bar {
+    position: fixed;
+    bottom: 0; left: 0; right: 0;
+    background: #111;
+    border-top: 1px solid #222;
+    padding: 14px 24px;
+    text-align: center;
+    font-size: 13px;
+    color: #888;
+    transform: translateY(100%);
+    transition: transform 0.25s;
+    z-index: 100;
+  }
+  .sel-bar.on { transform: translateY(0); }
+  .sel-bar strong { color: #6ee7b7; }
+
+  /* ── PALETTE A: Navy + Electric Blue ── */
+  .pa { background: #f7f8fc; height: 100%; display: flex; flex-direction: column; font-family: -apple-system, sans-serif; }
+  .pa-nav { display: flex; justify-content: space-between; align-items: center; padding: 12px 18px; background: #fff; border-bottom: 1px solid #eaecf5; }
+  .pa-logo { font-size: 13px; font-weight: 700; color: #0f1126; letter-spacing: -0.03em; }
+  .pa-links span { font-size: 10px; color: #8892b0; margin-left: 14px; }
+  .pa-hero { flex: 1; padding: 28px 18px 20px; display: flex; flex-direction: column; justify-content: center; background: linear-gradient(135deg, #f7f8fc 0%, #eef0fb 100%); }
+  .pa-eyebrow { font-size: 9px; color: #4f5bdb; letter-spacing: 0.15em; text-transform: uppercase; margin-bottom: 12px; font-weight: 600; }
+  .pa-title { font-size: 40px; font-weight: 800; color: #0f1126; line-height: 0.9; letter-spacing: -0.04em; }
+  .pa-title span { background: linear-gradient(135deg, #4f5bdb, #7c3aed); -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text; }
+  .pa-sub { font-size: 11px; color: #6272a4; line-height: 1.6; margin-top: 12px; max-width: 30ch; }
+  .pa-btn { margin-top: 16px; display: inline-flex; align-items: center; gap: 6px; background: linear-gradient(135deg, #4f5bdb, #7c3aed); color: #fff; font-size: 10px; font-weight: 700; padding: 9px 18px; border-radius: 8px; width: fit-content; }
+  .pa-swatches { display: flex; gap: 6px; margin-top: 14px; }
+  .pa-s { width: 28px; height: 28px; border-radius: 6px; }
+
+  /* ── PALETTE B: White + Cobalt Blue ── */
+  .pb { background: #fff; height: 100%; display: flex; flex-direction: column; font-family: -apple-system, sans-serif; }
+  .pb-nav { display: flex; justify-content: space-between; align-items: center; padding: 12px 18px; border-bottom: 1px solid #f0f0f0; }
+  .pb-logo { font-size: 13px; font-weight: 700; color: #0a0a0a; letter-spacing: -0.03em; }
+  .pb-links span { font-size: 10px; color: #aaa; margin-left: 14px; }
+  .pb-hero { flex: 1; padding: 28px 18px 20px; display: flex; flex-direction: column; justify-content: center; }
+  .pb-eyebrow { font-size: 9px; color: #0055ff; letter-spacing: 0.15em; text-transform: uppercase; margin-bottom: 12px; font-weight: 600; }
+  .pb-title { font-size: 40px; font-weight: 900; color: #0a0a0a; line-height: 0.88; letter-spacing: -0.05em; }
+  .pb-title span { color: #0055ff; }
+  .pb-sub { font-size: 11px; color: #777; line-height: 1.6; margin-top: 12px; max-width: 30ch; }
+  .pb-btn { margin-top: 16px; display: inline-flex; align-items: center; gap: 6px; background: #0055ff; color: #fff; font-size: 10px; font-weight: 700; padding: 9px 18px; border-radius: 6px; width: fit-content; }
+  .pb-swatches { display: flex; gap: 6px; margin-top: 14px; }
+  .pb-s { width: 28px; height: 28px; border-radius: 6px; }
+
+  /* ── PALETTE C: White + Rich Purple ── */
+  .pc { background: #fdfcff; height: 100%; display: flex; flex-direction: column; font-family: -apple-system, sans-serif; }
+  .pc-nav { display: flex; justify-content: space-between; align-items: center; padding: 12px 18px; background: #fff; border-bottom: 1px solid #ece8f5; }
+  .pc-logo { font-size: 13px; font-weight: 700; color: #1a0a2e; letter-spacing: -0.03em; }
+  .pc-links span { font-size: 10px; color: #9b8ab4; margin-left: 14px; }
+  .pc-hero { flex: 1; padding: 28px 18px 20px; display: flex; flex-direction: column; justify-content: center; }
+  .pc-eyebrow { font-size: 9px; color: #7c3aed; letter-spacing: 0.15em; text-transform: uppercase; margin-bottom: 12px; font-weight: 600; }
+  .pc-title { font-size: 40px; font-weight: 800; color: #1a0a2e; line-height: 0.9; letter-spacing: -0.04em; }
+  .pc-title span { background: linear-gradient(135deg, #7c3aed, #db2777); -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text; }
+  .pc-sub { font-size: 11px; color: #8b7aa0; line-height: 1.6; margin-top: 12px; max-width: 30ch; }
+  .pc-btn { margin-top: 16px; display: inline-flex; align-items: center; gap: 6px; background: #7c3aed; color: #fff; font-size: 10px; font-weight: 700; padding: 9px 18px; border-radius: 8px; width: fit-content; }
+  .pc-swatches { display: flex; gap: 6px; margin-top: 14px; }
+  .pc-s { width: 28px; height: 28px; border-radius: 6px; }
+</style>
+</head>
+<body>
+
+<h1>3 פלטות לבחירה</h1>
+<p class="subtitle">לחץ על הפלטה שמדברת אליך — נבנה את כל האתר סביבה</p>
+
+<div class="cards-grid">
+
+  <!-- A -->
+  <div class="card" data-choice="a" onclick="pick(this)">
+    <div class="preview">
+      <div class="pa">
+        <div class="pa-nav">
+          <span class="pa-logo">Hagai Heshes</span>
+          <div><span class="pa-links">Work</span><span class="pa-links">About</span></div>
+        </div>
+        <div class="pa-hero">
+          <div class="pa-eyebrow">Positioning &amp; GTM</div>
+          <div class="pa-title">The<br><span>Crystal-<br>izer</span></div>
+          <div class="pa-sub">You know what you've built. I make sure everyone else does too.</div>
+          <div class="pa-btn">Let's talk →</div>
+          <div class="pa-swatches">
+            <div class="pa-s" style="background:#f7f8fc;border:1px solid #ddd"></div>
+            <div class="pa-s" style="background:#0f1126"></div>
+            <div class="pa-s" style="background:#4f5bdb"></div>
+            <div class="pa-s" style="background:linear-gradient(135deg,#4f5bdb,#7c3aed)"></div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="card-label">
+      <h3>A — Navy + Indigo Gradient</h3>
+      <p>רקע קרם-לבן, כותרות כחול-כהה, gradient indigo-סגול. הכי קרוב ל-Stripe.</p>
+    </div>
+  </div>
+
+  <!-- B -->
+  <div class="card" data-choice="b" onclick="pick(this)">
+    <div class="preview">
+      <div class="pb">
+        <div class="pb-nav">
+          <span class="pb-logo">Hagai Heshes</span>
+          <div><span class="pb-links">Work</span><span class="pb-links">About</span></div>
+        </div>
+        <div class="pb-hero">
+          <div class="pb-eyebrow">Positioning &amp; GTM</div>
+          <div class="pb-title">The<br><span>Crystal-<br>izer</span></div>
+          <div class="pb-sub">You know what you've built. I make sure everyone else does too.</div>
+          <div class="pb-btn">Let's talk →</div>
+          <div class="pb-swatches">
+            <div class="pb-s" style="background:#fff;border:1px solid #eee"></div>
+            <div class="pb-s" style="background:#0a0a0a"></div>
+            <div class="pb-s" style="background:#0055ff"></div>
+            <div class="pb-s" style="background:#e8eeff"></div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="card-label">
+      <h3>B — Pure White + Electric Blue</h3>
+      <p>לבן נקי, כחול חשמלי חד. קונטרסט מקסימלי, מאוד bold ואמריקאי.</p>
+    </div>
+  </div>
+
+  <!-- C -->
+  <div class="card" data-choice="c" onclick="pick(this)">
+    <div class="preview">
+      <div class="pc">
+        <div class="pc-nav">
+          <span class="pc-logo">Hagai Heshes</span>
+          <div><span class="pc-links">Work</span><span class="pc-links">About</span></div>
+        </div>
+        <div class="pc-hero">
+          <div class="pc-eyebrow">Positioning &amp; GTM</div>
+          <div class="pc-title">The<br><span>Crystal-<br>izer</span></div>
+          <div class="pc-sub">You know what you've built. I make sure everyone else does too.</div>
+          <div class="pc-btn">Let's talk →</div>
+          <div class="pc-swatches">
+            <div class="pc-s" style="background:#fdfcff;border:1px solid #ece8f5"></div>
+            <div class="pc-s" style="background:#1a0a2e"></div>
+            <div class="pc-s" style="background:#7c3aed"></div>
+            <div class="pc-s" style="background:linear-gradient(135deg,#7c3aed,#db2777)"></div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="card-label">
+      <h3>C — White + Deep Purple + Pink Gradient</h3>
+      <p>סגול עמוק עם gradient לוורד. הכי "יצירתי" מהשלושה — תחושת premium agency.</p>
+    </div>
+  </div>
+
+</div>
+
+<div class="sel-bar" id="bar">
+  בחרת: <strong id="sel">—</strong> &nbsp;|&nbsp; ספר לי גם בצ'אט
+</div>
+
+<script>
+var cur = null;
+function pick(el) {
+  if (cur && cur !== el) cur.classList.remove('selected');
+  el.classList.toggle('selected');
+  cur = el.classList.contains('selected') ? el : null;
+  var bar = document.getElementById('bar');
+  var sel = document.getElementById('sel');
+  if (cur) {
+    bar.classList.add('on');
+    sel.textContent = cur.querySelector('h3').textContent;
+    if (window.__sp_record) window.__sp_record({ type: 'click', choice: cur.dataset.choice, text: cur.querySelector('h3').textContent });
+  } else {
+    bar.classList.remove('on');
+  }
+}
+</script>
+</body>
+</html>

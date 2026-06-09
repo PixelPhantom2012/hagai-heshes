@@ -1,0 +1,334 @@
+<!DOCTYPE html>
+<html lang="he" dir="rtl">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>כיוון עיצובי</title>
+<style>
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  body {
+    font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+    background: #0f0f0f;
+    color: #fff;
+    min-height: 100vh;
+    padding: 40px 24px;
+  }
+  h1 {
+    text-align: center;
+    font-size: 22px;
+    font-weight: 600;
+    color: #fff;
+    margin-bottom: 8px;
+    letter-spacing: -0.02em;
+  }
+  .subtitle {
+    text-align: center;
+    color: #888;
+    font-size: 14px;
+    margin-bottom: 40px;
+  }
+  .cards-grid {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 20px;
+    max-width: 960px;
+    margin: 0 auto;
+  }
+  @media (max-width: 680px) { .cards-grid { grid-template-columns: 1fr; } }
+
+  .card {
+    border-radius: 12px;
+    overflow: hidden;
+    cursor: pointer;
+    border: 2px solid transparent;
+    transition: border-color 0.2s, transform 0.18s;
+    background: #1a1a1a;
+  }
+  .card:hover { transform: translateY(-3px); }
+  .card.selected { border-color: #6ee7b7; }
+
+  .card-preview {
+    height: 260px;
+    overflow: hidden;
+    position: relative;
+  }
+
+  .card-label {
+    padding: 14px 18px;
+    background: #1a1a1a;
+    border-top: 1px solid #2a2a2a;
+  }
+  .card-label h3 { font-size: 15px; font-weight: 600; color: #fff; margin-bottom: 4px; }
+  .card-label p { font-size: 12px; color: #888; line-height: 1.4; }
+
+  .selected-bar {
+    position: fixed;
+    bottom: 0; left: 0; right: 0;
+    background: #111;
+    border-top: 1px solid #222;
+    padding: 14px 24px;
+    text-align: center;
+    font-size: 13px;
+    color: #888;
+    transform: translateY(100%);
+    transition: transform 0.25s;
+    z-index: 100;
+  }
+  .selected-bar.visible { transform: translateY(0); }
+  .selected-bar strong { color: #6ee7b7; }
+
+  /* ── STYLE A: Dark Editorial ── */
+  .style-a {
+    background: #080808;
+    height: 100%;
+    padding: 0;
+    font-family: 'Georgia', serif;
+    display: flex;
+    flex-direction: column;
+  }
+  .sa-nav {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 14px 20px;
+    border-bottom: 1px solid #222;
+  }
+  .sa-logo { font-size: 13px; color: #888; letter-spacing: 0.1em; text-transform: uppercase; font-family: sans-serif; }
+  .sa-links { display: flex; gap: 16px; }
+  .sa-links span { font-size: 10px; color: #555; letter-spacing: 0.08em; text-transform: uppercase; font-family: sans-serif; }
+  .sa-hero { flex: 1; padding: 24px 20px 16px; display: flex; flex-direction: column; justify-content: flex-end; }
+  .sa-tag { font-size: 9px; color: #c9a96e; letter-spacing: 0.18em; text-transform: uppercase; font-family: sans-serif; margin-bottom: 12px; }
+  .sa-title { font-size: 38px; color: #f0ece4; line-height: 0.95; letter-spacing: -0.03em; font-weight: 400; }
+  .sa-title em { color: #c9a96e; font-style: italic; }
+  .sa-sub { font-size: 11px; color: #555; line-height: 1.6; margin-top: 12px; max-width: 30ch; font-family: sans-serif; }
+  .sa-btn { margin-top: 14px; display: inline-block; background: #c9a96e; color: #080808; font-size: 9px; font-family: sans-serif; font-weight: 700; letter-spacing: 0.1em; text-transform: uppercase; padding: 8px 16px; border-radius: 2px; width: fit-content; }
+
+  /* ── STYLE B: Bright Minimal ── */
+  .style-b {
+    background: #fff;
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+    font-family: -apple-system, sans-serif;
+  }
+  .sb-nav {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 12px 18px;
+    border-bottom: 1px solid #eee;
+  }
+  .sb-logo { font-size: 14px; font-weight: 700; color: #111; letter-spacing: -0.03em; }
+  .sb-links { display: flex; gap: 14px; }
+  .sb-links span { font-size: 11px; color: #999; }
+  .sb-hero { flex: 1; padding: 28px 18px 18px; display: flex; flex-direction: column; justify-content: center; }
+  .sb-eyebrow { font-size: 10px; color: #6c6c6c; letter-spacing: 0.12em; text-transform: uppercase; margin-bottom: 14px; display: flex; align-items: center; gap: 8px; }
+  .sb-eyebrow::before { content: ''; width: 20px; height: 1px; background: #111; display: block; }
+  .sb-title { font-size: 42px; font-weight: 800; color: #111; line-height: 0.92; letter-spacing: -0.04em; }
+  .sb-title .accent { color: transparent; -webkit-text-stroke: 2px #111; }
+  .sb-sub { font-size: 12px; color: #666; line-height: 1.6; margin-top: 14px; max-width: 32ch; }
+  .sb-actions { margin-top: 16px; display: flex; gap: 8px; align-items: center; }
+  .sb-btn { background: #111; color: #fff; font-size: 10px; font-weight: 600; padding: 8px 16px; border-radius: 6px; letter-spacing: 0.03em; }
+  .sb-ghost { font-size: 10px; color: #999; border-bottom: 1px solid #ddd; padding-bottom: 1px; }
+
+  /* ── STYLE C: Magazine / Editorial Split ── */
+  .style-c {
+    background: #faf8f4;
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+    font-family: 'Georgia', serif;
+  }
+  .sc-nav {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 12px 18px;
+    border-bottom: 2px solid #111;
+  }
+  .sc-logo { font-size: 16px; font-weight: 400; color: #111; letter-spacing: -0.02em; }
+  .sc-issue { font-size: 9px; color: #999; letter-spacing: 0.1em; text-transform: uppercase; font-family: sans-serif; }
+  .sc-body { flex: 1; display: grid; grid-template-columns: 1fr 1px 1fr; }
+  .sc-left { padding: 20px 16px; display: flex; flex-direction: column; justify-content: flex-end; border-right: 1px solid #ddd; }
+  .sc-right { padding: 20px 16px; display: flex; flex-direction: column; justify-content: center; }
+  .sc-num { font-size: 80px; font-weight: 400; color: #e8e4dc; line-height: 1; font-family: 'Georgia', serif; }
+  .sc-kicker { font-size: 9px; color: #999; letter-spacing: 0.14em; text-transform: uppercase; font-family: sans-serif; margin-bottom: 8px; }
+  .sc-title { font-size: 24px; color: #111; line-height: 1.1; letter-spacing: -0.02em; font-weight: 400; }
+  .sc-title em { font-style: italic; color: #b8975a; }
+  .sc-body-text { font-size: 10px; color: #888; line-height: 1.7; margin-top: 10px; font-family: sans-serif; max-width: 28ch; }
+  .sc-rule { width: 32px; height: 1px; background: #b8975a; margin: 12px 0; }
+  .sc-quote { font-size: 14px; color: #333; line-height: 1.5; font-style: italic; }
+  .sc-attr { font-size: 9px; color: #b8975a; letter-spacing: 0.1em; text-transform: uppercase; font-family: sans-serif; margin-top: 8px; }
+
+  /* ── STYLE D: Bold Brutalist ── */
+  .style-d {
+    background: #f2f0eb;
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+    font-family: -apple-system, sans-serif;
+  }
+  .sd-nav {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 10px 16px;
+    background: #111;
+  }
+  .sd-logo { font-size: 13px; font-weight: 900; color: #fff; letter-spacing: -0.03em; text-transform: uppercase; }
+  .sd-links { display: flex; gap: 12px; }
+  .sd-links span { font-size: 9px; color: #888; letter-spacing: 0.1em; text-transform: uppercase; }
+  .sd-hero { flex: 1; padding: 20px 16px; display: grid; grid-template-rows: 1fr auto; }
+  .sd-big { font-size: 58px; font-weight: 900; color: #111; line-height: 0.88; letter-spacing: -0.05em; text-transform: uppercase; }
+  .sd-big .line2 { color: transparent; -webkit-text-stroke: 2.5px #111; }
+  .sd-big .line3 { color: #b8975a; }
+  .sd-bottom { display: flex; justify-content: space-between; align-items: flex-end; margin-top: 16px; }
+  .sd-sub { font-size: 11px; color: #666; line-height: 1.5; max-width: 26ch; }
+  .sd-btn { background: #111; color: #f2f0eb; font-size: 10px; font-weight: 900; padding: 10px 16px; letter-spacing: 0.05em; text-transform: uppercase; border: 2px solid #111; }
+</style>
+</head>
+<body>
+<h1>איזה כיוון עיצובי מדבר אליך?</h1>
+<p class="subtitle">לחץ על העיצוב שהכי קרוב לתחושה שאתה רוצה — אפשר גם לבחור כמה</p>
+
+<div class="cards-grid">
+
+  <!-- A: Dark Luxury -->
+  <div class="card" data-choice="a" onclick="selectCard(this)">
+    <div class="card-preview">
+      <div class="style-a">
+        <div class="sa-nav">
+          <span class="sa-logo">Hagai Heshes</span>
+          <div class="sa-links">
+            <span>Work</span><span>Approach</span><span>Contact</span>
+          </div>
+        </div>
+        <div class="sa-hero">
+          <div class="sa-tag">Positioning &amp; GTM</div>
+          <div class="sa-title">The<br><em>Crystallizer</em></div>
+          <div class="sa-sub">Positioning for companies that can't afford to be misunderstood.</div>
+          <div class="sa-btn">Let's talk →</div>
+        </div>
+      </div>
+    </div>
+    <div class="card-label">
+      <h3>A — Dark Luxury</h3>
+      <p>רקע שחור, זהב, סריף אלגנטי. פרמיום שקט ומרשים.</p>
+    </div>
+  </div>
+
+  <!-- B: Bright Minimal -->
+  <div class="card" data-choice="b" onclick="selectCard(this)">
+    <div class="card-preview">
+      <div class="style-b">
+        <div class="sb-nav">
+          <span class="sb-logo">Hagai Heshes</span>
+          <div class="sb-links">
+            <span>Work</span><span>About</span><span>Contact</span>
+          </div>
+        </div>
+        <div class="sb-hero">
+          <div class="sb-eyebrow">Positioning &amp; GTM</div>
+          <div class="sb-title">The<br><span class="accent">Crystal</span><br>izer</div>
+          <div class="sb-sub">You know what you've built. I make sure everyone else does too.</div>
+          <div class="sb-actions">
+            <span class="sb-btn">Let's talk</span>
+            <span class="sb-ghost">See work →</span>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="card-label">
+      <h3>B — Bright Minimal</h3>
+      <p>לבן נקי, טיפוגרפיה בולדית כבדה, מודרני ואמין. כמו Stripe / Linear.</p>
+    </div>
+  </div>
+
+  <!-- C: Editorial Magazine -->
+  <div class="card" data-choice="c" onclick="selectCard(this)">
+    <div class="card-preview">
+      <div class="style-c">
+        <div class="sc-nav">
+          <span class="sc-logo">Hagai Heshes</span>
+          <span class="sc-issue">The Crystallizer</span>
+        </div>
+        <div class="sc-body">
+          <div class="sc-left">
+            <div class="sc-num">01</div>
+            <div class="sc-kicker">Positioning &amp; Go-to-Market</div>
+            <div class="sc-title">The<br><em>Crystallizer</em></div>
+            <div class="sc-body-text">Clarity as a competitive advantage. I distill what you're really about.</div>
+          </div>
+          <div class="sc-right">
+            <div class="sc-rule"></div>
+            <div class="sc-quote">"The world is full of great products that never found their people."</div>
+            <div class="sc-attr">— Hagai Heshes</div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="card-label">
+      <h3>C — מגזין / Editorial</h3>
+      <p>ניוז פייפר, קרם וחום, גריד עיתונאי. נראה כמו New York Times meets consultant.</p>
+    </div>
+  </div>
+
+  <!-- D: Bold Brutalist -->
+  <div class="card" data-choice="d" onclick="selectCard(this)">
+    <div class="card-preview">
+      <div class="style-d">
+        <div class="sd-nav">
+          <span class="sd-logo">Hagai Heshes</span>
+          <div class="sd-links">
+            <span>Work</span><span>About</span><span>Contact</span>
+          </div>
+        </div>
+        <div class="sd-hero">
+          <div>
+            <div class="sd-big">THE<br><span class="line2">CRYS</span><br><span class="line3">TALIZER</span></div>
+          </div>
+          <div class="sd-bottom">
+            <div class="sd-sub">Positioning and go-to-market for companies that can't afford to be misunderstood.</div>
+            <div class="sd-btn">Talk →</div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="card-label">
+      <h3>D — Bold / Brutalist</h3>
+      <p>אותיות ענקיות, קונטרסט גבוה, אנרגיה. כמו agency עם ביטחון עצמי.</p>
+    </div>
+  </div>
+
+</div>
+
+<div class="selected-bar" id="sel-bar">
+  בחרת: <strong id="sel-text">—</strong> &nbsp;|&nbsp; ספר לי גם בצ'אט מה אהבת ומה לא
+</div>
+
+<script>
+var selected = [];
+function selectCard(el) {
+  el.classList.toggle('selected');
+  var choice = el.dataset.choice;
+  var idx = selected.indexOf(choice);
+  if (idx === -1) selected.push(choice);
+  else selected.splice(idx, 1);
+
+  var bar = document.getElementById('sel-bar');
+  var txt = document.getElementById('sel-text');
+  if (selected.length === 0) {
+    bar.classList.remove('visible');
+  } else {
+    bar.classList.add('visible');
+    txt.textContent = selected.map(function(c){ return c.toUpperCase(); }).join(', ');
+  }
+
+  // fire superpowers event if available
+  if (window.__sp_record) {
+    window.__sp_record({ type: 'click', choice: choice, text: el.querySelector('h3').textContent });
+  }
+}
+</script>
+</body>
+</html>

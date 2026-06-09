@@ -1,0 +1,382 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Mockup — Navy + Indigo</title>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet">
+<style>
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+  html { font-size: 16px; }
+  body {
+    font-family: 'Inter', -apple-system, sans-serif;
+    background: #f5f7ff;
+    -webkit-font-smoothing: antialiased;
+    overflow-x: hidden;
+  }
+
+  /* ── NAV ── */
+  nav {
+    position: sticky;
+    top: 0;
+    z-index: 100;
+    height: 64px;
+    background: rgba(245,247,255,0.85);
+    backdrop-filter: blur(16px);
+    border-bottom: 1px solid rgba(79,91,219,0.1);
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 0 48px;
+  }
+  .nav-logo {
+    font-size: 16px;
+    font-weight: 700;
+    color: #0d1033;
+    letter-spacing: -0.04em;
+  }
+  .nav-links {
+    display: flex;
+    align-items: center;
+    gap: 32px;
+    list-style: none;
+  }
+  .nav-links a {
+    font-size: 14px;
+    color: #6272a4;
+    text-decoration: none;
+    font-weight: 400;
+    transition: color 0.15s;
+  }
+  .nav-links a:hover { color: #0d1033; }
+  .nav-cta {
+    background: linear-gradient(135deg, #4f5bdb, #7c3aed);
+    color: #fff;
+    font-size: 13px;
+    font-weight: 600;
+    padding: 9px 22px;
+    border-radius: 8px;
+    text-decoration: none;
+    letter-spacing: -0.01em;
+    transition: opacity 0.2s, transform 0.15s;
+  }
+  .nav-cta:hover { opacity: 0.9; transform: translateY(-1px); }
+
+  /* ── HERO ── */
+  .hero {
+    min-height: calc(100vh - 64px);
+    display: flex;
+    align-items: center;
+    padding: 80px 48px;
+    max-width: 1200px;
+    margin: 0 auto;
+    gap: 80px;
+  }
+  .hero-text {
+    flex: 1;
+    max-width: 600px;
+  }
+  .hero-badge {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    background: rgba(79,91,219,0.08);
+    border: 1px solid rgba(79,91,219,0.2);
+    color: #4f5bdb;
+    font-size: 12px;
+    font-weight: 600;
+    letter-spacing: 0.06em;
+    text-transform: uppercase;
+    padding: 6px 14px;
+    border-radius: 100px;
+    margin-bottom: 40px;
+  }
+  .hero-badge::before {
+    content: '';
+    width: 6px;
+    height: 6px;
+    background: #4f5bdb;
+    border-radius: 50%;
+    animation: pulse 2s infinite;
+  }
+  @keyframes pulse {
+    0%,100% { opacity: 1; transform: scale(1); }
+    50% { opacity: 0.4; transform: scale(0.8); }
+  }
+  .hero-title {
+    font-size: clamp(56px, 7vw, 88px);
+    font-weight: 800;
+    color: #0d1033;
+    line-height: 0.92;
+    letter-spacing: -0.045em;
+    margin-bottom: 28px;
+  }
+  .hero-title .gradient {
+    background: linear-gradient(135deg, #4f5bdb 0%, #7c3aed 60%, #a855f7 100%);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+  }
+  .hero-sub {
+    font-size: 20px;
+    font-weight: 400;
+    color: #4a5568;
+    line-height: 1.55;
+    margin-bottom: 16px;
+    max-width: 48ch;
+  }
+  .hero-lede {
+    font-size: 15px;
+    color: #6b7a99;
+    line-height: 1.75;
+    max-width: 46ch;
+    margin-bottom: 48px;
+  }
+  .hero-actions {
+    display: flex;
+    gap: 14px;
+    align-items: center;
+    flex-wrap: wrap;
+  }
+  .btn-primary {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    background: linear-gradient(135deg, #4f5bdb, #7c3aed);
+    color: #fff;
+    font-size: 14px;
+    font-weight: 600;
+    padding: 14px 28px;
+    border-radius: 10px;
+    text-decoration: none;
+    letter-spacing: -0.01em;
+    transition: transform 0.2s, box-shadow 0.2s;
+    box-shadow: 0 4px 20px rgba(79,91,219,0.35);
+  }
+  .btn-primary:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 8px 30px rgba(79,91,219,0.45);
+  }
+  .btn-ghost {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    color: #6272a4;
+    font-size: 14px;
+    font-weight: 500;
+    text-decoration: none;
+    padding: 14px 6px;
+    border-bottom: 1px solid transparent;
+    transition: color 0.15s, border-color 0.15s;
+    letter-spacing: -0.01em;
+  }
+  .btn-ghost:hover { color: #0d1033; border-bottom-color: #0d1033; }
+
+  /* ── HERO VISUAL ── */
+  .hero-visual {
+    flex: 1;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    position: relative;
+  }
+  .crystal-wrap {
+    position: relative;
+    width: 340px;
+    height: 420px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+  .crystal-bg {
+    position: absolute;
+    inset: -40px;
+    background: radial-gradient(ellipse at center, rgba(124,58,237,0.15) 0%, transparent 70%);
+    border-radius: 50%;
+    animation: glow 4s ease-in-out infinite;
+  }
+  @keyframes glow {
+    0%,100% { opacity: 0.6; transform: scale(1); }
+    50% { opacity: 1; transform: scale(1.1); }
+  }
+  .crystal-bg-2 {
+    position: absolute;
+    inset: 0;
+    background: radial-gradient(ellipse at 30% 40%, rgba(79,91,219,0.1) 0%, transparent 60%);
+    border-radius: 50%;
+  }
+  .hero-photo {
+    width: 280px;
+    height: 360px;
+    object-fit: cover;
+    object-position: top center;
+    border-radius: 20px;
+    position: relative;
+    z-index: 1;
+    box-shadow: 0 32px 80px rgba(13,16,51,0.25), 0 0 0 1px rgba(79,91,219,0.15);
+  }
+  .photo-badge {
+    position: absolute;
+    bottom: -16px;
+    left: 50%;
+    transform: translateX(-50%);
+    background: #fff;
+    border: 1px solid rgba(79,91,219,0.15);
+    border-radius: 100px;
+    padding: 8px 20px;
+    font-size: 12px;
+    font-weight: 600;
+    color: #0d1033;
+    white-space: nowrap;
+    z-index: 2;
+    box-shadow: 0 4px 20px rgba(13,16,51,0.1);
+    letter-spacing: -0.02em;
+  }
+
+  /* ── STATEMENT STRIP ── */
+  .strip {
+    background: #0d1033;
+    border-top: 1px solid rgba(79,91,219,0.3);
+    border-bottom: 1px solid rgba(79,91,219,0.3);
+    overflow: hidden;
+    padding: 0;
+  }
+  .strip-track {
+    display: flex;
+    width: max-content;
+    animation: marquee 24s linear infinite;
+    padding: 24px 0;
+  }
+  .strip-item {
+    display: flex;
+    align-items: center;
+    gap: 48px;
+    padding: 0 48px;
+    white-space: nowrap;
+    flex-shrink: 0;
+  }
+  .strip-text {
+    font-size: 16px;
+    font-weight: 500;
+    color: rgba(255,255,255,0.7);
+    letter-spacing: -0.01em;
+  }
+  .strip-text em { font-style: normal; color: #a78bfa; }
+  .strip-dot {
+    width: 4px;
+    height: 4px;
+    background: rgba(124,58,237,0.6);
+    border-radius: 50%;
+    flex-shrink: 0;
+  }
+  @keyframes marquee {
+    from { transform: translateX(0); }
+    to { transform: translateX(-50%); }
+  }
+
+  /* ── LABEL at bottom ── */
+  .mockup-label {
+    text-align: center;
+    padding: 20px;
+    font-size: 12px;
+    color: #999;
+    background: #f5f7ff;
+    font-family: 'Inter', sans-serif;
+  }
+  .mockup-label strong { color: #4f5bdb; }
+</style>
+</head>
+<body>
+
+<nav>
+  <span class="nav-logo">Hagai Heshes</span>
+  <ul class="nav-links">
+    <li><a href="#">Work</a></li>
+    <li><a href="#">Approach</a></li>
+    <li><a href="#">About</a></li>
+  </ul>
+  <a href="#" class="nav-cta">Get in touch</a>
+</nav>
+
+<section class="hero">
+  <div class="hero-text">
+    <div class="hero-badge">Positioning &amp; Go-to-Market</div>
+    <h1 class="hero-title">
+      The<br>
+      <span class="gradient">Crystal-<br>izer</span>
+    </h1>
+    <p class="hero-sub">You know what you've built.<br>I make sure everyone else does too.</p>
+    <p class="hero-lede">
+      Positioning and go-to-market for companies that can't afford to be misunderstood.
+      I distill what you're really about, then help you take it to market.
+    </p>
+    <div class="hero-actions">
+      <a href="#" class="btn-primary">
+        Let's talk
+        <svg width="14" height="14" viewBox="0 0 14 14" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M2 7h10M8 3l4 4-4 4"/></svg>
+      </a>
+      <a href="#" class="btn-ghost">
+        See my work →
+      </a>
+    </div>
+  </div>
+
+  <div class="hero-visual">
+    <div class="crystal-wrap">
+      <div class="crystal-bg"></div>
+      <div class="crystal-bg-2"></div>
+      <img class="hero-photo" src="/logos/hagai.jpeg" alt="Hagai Heshes"
+           onerror="this.style.display='none';document.querySelector('.crystal-placeholder').style.display='flex'">
+      <div class="crystal-placeholder" style="display:none;width:280px;height:360px;background:linear-gradient(135deg,rgba(79,91,219,0.15),rgba(124,58,237,0.2));border-radius:20px;align-items:center;justify-content:center;position:relative;z-index:1;">
+        <svg width="80" height="100" viewBox="0 0 260 340" fill="none">
+          <g transform="translate(130,170)">
+            <polygon points="0,-150 -72,-55 0,-30" fill="#4f5bdb" opacity="0.3"/>
+            <polygon points="0,-150 72,-55 0,-30" fill="#4f5bdb" opacity="0.6"/>
+            <polygon points="-72,-55 -90,72 0,95 0,-30" fill="#7c3aed" opacity="0.4"/>
+            <polygon points="72,-55 90,72 0,95 0,-30" fill="#7c3aed" opacity="0.75"/>
+            <polygon points="-90,72 0,150 0,95" fill="#a855f7" opacity="0.25"/>
+            <polygon points="90,72 0,150 0,95" fill="#a855f7" opacity="0.7"/>
+            <polygon points="0,-150 72,-55 90,72 0,150 -90,72 -72,-55" stroke="#7c3aed" stroke-opacity="0.5" stroke-width="1" fill="none"/>
+          </g>
+        </svg>
+      </div>
+      <div class="photo-badge">Hagai Heshes — The Crystallizer</div>
+    </div>
+  </div>
+</section>
+
+<div class="strip">
+  <div class="strip-track">
+    <div class="strip-item">
+      <p class="strip-text">The world is full of great products that never found their people. I fix <em>that</em>.</p>
+      <span class="strip-dot"></span>
+    </div>
+    <div class="strip-item">
+      <p class="strip-text">Clarity is a competitive advantage. Most companies don't have it.</p>
+      <span class="strip-dot"></span>
+    </div>
+    <div class="strip-item">
+      <p class="strip-text">If you can't explain what you do in a sentence, your customers can't either.</p>
+      <span class="strip-dot"></span>
+    </div>
+    <div class="strip-item">
+      <p class="strip-text">The world is full of great products that never found their people. I fix <em>that</em>.</p>
+      <span class="strip-dot"></span>
+    </div>
+    <div class="strip-item">
+      <p class="strip-text">Clarity is a competitive advantage. Most companies don't have it.</p>
+      <span class="strip-dot"></span>
+    </div>
+    <div class="strip-item">
+      <p class="strip-text">If you can't explain what you do in a sentence, your customers can't either.</p>
+      <span class="strip-dot"></span>
+    </div>
+  </div>
+</div>
+
+<div class="mockup-label">
+  <strong>כיוון A — Navy + Indigo Gradient</strong> &nbsp;|&nbsp; ספר לי בצ'אט מה אתה חושב — מה אוהב, מה לא, מה לשנות
+</div>
+
+</body>
+</html>
