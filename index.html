@@ -909,22 +909,24 @@
     /* ── CRYSTAL PROGRESS ── */
     .crystal-progress {
       position: fixed;
-      right: clamp(16px, 2.5vw, 40px);
+      right: clamp(16px, 2.5vw, 44px);
       top: 50%;
       transform: translateY(-50%);
-      width: clamp(80px, 10vw, 160px);
+      width: clamp(180px, 20vw, 280px);
       z-index: 40;
       pointer-events: none;
       mix-blend-mode: multiply;
-      opacity: 0;
-      transition: opacity 0.6s var(--ease-out);
+      /* No opacity here — opacity on child to avoid isolated-group stacking context */
     }
-    .crystal-progress.visible { opacity: 1; }
     .crystal-progress-video {
       width: 100%;
       height: auto;
       display: block;
+      filter: brightness(1.15);
+      opacity: 0;
+      transition: opacity 0.5s var(--ease-out);
     }
+    .crystal-progress.visible .crystal-progress-video { opacity: 1; }
     @media (max-width: 860px) { .crystal-progress { display: none; } }
 
     /* ── SCROLL REVEAL ── */
@@ -1452,22 +1454,37 @@
   var cpWrap = document.getElementById('crystal-progress');
   var cpVid = document.getElementById('crystal-progress-video');
   if (cpVid) {
-    fetch(cpVid.src)
+    var cpOrigSrc = cpVid.src;
+    fetch(cpOrigSrc)
       .then(function (r) { return r.blob(); })
       .then(function (blob) {
-        var blobUrl = URL.createObjectURL(blob);
-        cpVid.src = blobUrl;
+        cpVid.src = URL.createObjectURL(blob);
         cpVid.load();
       });
     document.documentElement.addEventListener('touchstart', function () {
       cpVid.play(); cpVid.pause();
     }, { once: true });
-    window.addEventListener('scroll', function () {
-      var progress = window.scrollY / (document.body.scrollHeight - window.innerHeight);
-      if (cpVid.duration) {
-        cpVid.currentTime = Math.min(progress, 1) * cpVid.duration;
+
+    var cpRafPending = false;
+    function cpUpdate() {
+      cpRafPending = false;
+      var totalH = document.body.scrollHeight - window.innerHeight;
+      if (totalH > 0 && cpVid.duration) {
+        var progress = Math.min(Math.max(window.scrollY / totalH, 0), 1);
+        var target = progress * cpVid.duration;
+        if ('fastSeek' in cpVid) {
+          cpVid.fastSeek(target);
+        } else {
+          cpVid.currentTime = target;
+        }
       }
       cpWrap.classList.toggle('visible', window.scrollY > 80);
+    }
+    window.addEventListener('scroll', function () {
+      if (!cpRafPending) {
+        cpRafPending = true;
+        requestAnimationFrame(cpUpdate);
+      }
     }, { passive: true });
   }
 
