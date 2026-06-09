@@ -619,6 +619,104 @@
       .clients-header { padding: 44px 20px 20px; flex-direction: column; gap: 6px; }
     }
 
+    /* ── HOW I WORK ── */
+    .how-section {
+      background: var(--bg);
+      border-bottom: 1px solid var(--line);
+    }
+    .how-inner {
+      max-width: var(--maxw);
+      margin: 0 auto;
+      padding: 96px 48px;
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 88px;
+      align-items: start;
+    }
+    .how-label-col { padding-top: 8px; }
+    .how-title {
+      font-size: clamp(36px, 4.5vw, 56px);
+      font-weight: 700;
+      letter-spacing: -0.045em;
+      color: var(--navy);
+      line-height: 1.0;
+      margin-top: 18px;
+    }
+    .how-body p {
+      font-size: 15.5px;
+      line-height: 1.82;
+      color: var(--text-body);
+      margin-bottom: 20px;
+      max-width: 50ch;
+    }
+    .how-body p:last-child { margin-bottom: 0; }
+
+    @media (max-width: 720px) {
+      .how-inner { grid-template-columns: 1fr; gap: 32px; padding: 64px 20px; }
+    }
+
+    /* ── DELIVERABLES ── */
+    .deliv-section {
+      background: var(--bg);
+      border-bottom: 1px solid var(--line);
+    }
+    .deliv-inner {
+      max-width: var(--maxw);
+      margin: 0 auto;
+      padding: 80px 48px;
+      display: grid;
+      grid-template-columns: 260px 1fr;
+      gap: 88px;
+      align-items: start;
+    }
+    .deliv-label-col { padding-top: 4px; }
+    .deliv-title {
+      font-size: clamp(20px, 2.4vw, 28px);
+      font-weight: 700;
+      letter-spacing: -0.035em;
+      color: var(--navy);
+      line-height: 1.15;
+      margin-top: 14px;
+    }
+    .deliv-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 44px 60px; }
+    .deliv-group-title {
+      font-size: 15px;
+      font-weight: 600;
+      font-style: italic;
+      color: var(--navy);
+      padding-bottom: 12px;
+      border-bottom: 1px solid var(--line);
+      letter-spacing: -0.02em;
+    }
+    .deliv-list { list-style: none; display: flex; flex-direction: column; }
+    .deliv-list li {
+      font-size: 13.5px;
+      color: var(--text-dim);
+      line-height: 1.6;
+      display: flex;
+      align-items: flex-start;
+      gap: 14px;
+      padding: 12px 0;
+      border-bottom: 1px solid var(--line);
+    }
+    .deliv-list li:last-child { border-bottom: none; padding-bottom: 0; }
+    .deliv-list li::before {
+      content: '';
+      display: block;
+      width: 4px;
+      height: 4px;
+      border-radius: 50%;
+      background: var(--indigo);
+      opacity: 0.6;
+      flex-shrink: 0;
+      margin-top: 6px;
+    }
+
+    @media (max-width: 720px) {
+      .deliv-inner { grid-template-columns: 1fr; gap: 36px; padding: 56px 20px; }
+      .deliv-grid { grid-template-columns: 1fr; gap: 36px; }
+    }
+
   </style>
 </head>
 <body>
@@ -766,6 +864,51 @@
     <div class="client-logo"><img src="logos/seagate_logo-removebg-preview.png" alt="Seagate" loading="lazy" height="28"></div>
     <div class="client-logo"><img src="logos/monday_logo-removebg-preview.png" alt="Monday.com" loading="lazy" height="28"></div>
     <div class="client-logo"><img src="logos/wix_logo-removebg-preview.png" alt="Wix" loading="lazy" height="28"></div>
+  </div>
+</section>
+
+<!-- HOW I WORK -->
+<section class="how-section" id="how">
+  <div class="how-inner">
+    <div class="how-label-col reveal">
+      <span class="t-label" style="display:block;margin-bottom:18px;">Approach</span>
+      <h2 class="how-title">How I<br>work</h2>
+    </div>
+    <div class="how-body reveal" style="transition-delay:0.12s">
+      <p>I work with a small number of clients at a time. Deeply, not broadly.</p>
+      <p>No fluff, no shelfware. I move fast, get to the essential quickly, and leave you with something you can actually use.</p>
+      <p>Most clients come through referral.</p>
+    </div>
+  </div>
+</section>
+
+<!-- DELIVERABLES -->
+<section class="deliv-section" id="deliverables">
+  <div class="deliv-inner">
+    <div class="deliv-label-col reveal">
+      <span class="t-label" style="display:block;margin-bottom:14px;">Deliverables</span>
+      <h2 class="deliv-title">What you walk away with</h2>
+    </div>
+    <div class="deliv-grid stagger">
+      <div class="deliv-group">
+        <div class="deliv-group-title">Crystallization</div>
+        <ul class="deliv-list">
+          <li>Positioning and messaging framework</li>
+          <li>Value propositions</li>
+          <li>Company and product narrative</li>
+          <li>Investor story</li>
+        </ul>
+      </div>
+      <div class="deliv-group">
+        <div class="deliv-group-title">Go-to-Market</div>
+        <ul class="deliv-list">
+          <li>GTM strategy and plan</li>
+          <li>Sales deck</li>
+          <li>Website copy</li>
+          <li>Sales enablement materials</li>
+        </ul>
+      </div>
+    </div>
   </div>
 </section>
 
