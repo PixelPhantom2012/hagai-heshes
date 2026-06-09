@@ -717,6 +717,193 @@
       .deliv-grid { grid-template-columns: 1fr; gap: 36px; }
     }
 
+    /* ── ABOUT ── */
+    .about-section {
+      background: var(--bg-alt);
+      border-bottom: 1px solid var(--line);
+    }
+    .about-inner {
+      max-width: var(--maxw);
+      margin: 0 auto;
+      padding: 88px 48px;
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 72px;
+      align-items: start;
+    }
+    .about-rule {
+      display: block;
+      width: 32px;
+      height: 2px;
+      background: var(--indigo);
+      margin-bottom: 28px;
+      opacity: 0.5;
+    }
+    .about-title {
+      font-size: clamp(24px, 2.8vw, 36px);
+      font-weight: 700;
+      letter-spacing: -0.04em;
+      color: var(--navy);
+      line-height: 1.1;
+      margin-top: 16px;
+    }
+    .about-body p {
+      font-size: 15.5px;
+      line-height: 1.82;
+      color: var(--text-body);
+      margin-bottom: 20px;
+    }
+    .about-body p:last-child { margin-bottom: 0; }
+
+    @media (max-width: 720px) {
+      .about-inner { grid-template-columns: 1fr; gap: 36px; padding: 56px 20px; }
+    }
+
+    /* ── CONTACT ── */
+    .contact-section {
+      background: var(--dark-bg);
+      border-top: 1px solid oklch(100% 0 0 / 0.06);
+      position: relative;
+      overflow: hidden;
+    }
+    .contact-bg-crystal {
+      position: absolute;
+      right: -80px;
+      top: 50%;
+      transform: translateY(-50%);
+      opacity: 0.04;
+      pointer-events: none;
+    }
+    .contact-inner {
+      position: relative;
+      max-width: var(--maxw);
+      margin: 0 auto;
+      padding: 96px 48px;
+      display: grid;
+      grid-template-columns: 1fr auto;
+      gap: 64px;
+      align-items: center;
+      z-index: 1;
+    }
+    .contact-headline {
+      font-size: clamp(40px, 5.5vw, 68px);
+      font-weight: 800;
+      line-height: 1.0;
+      letter-spacing: -0.05em;
+      color: oklch(94% 0.005 265);
+      margin-bottom: 22px;
+    }
+    .contact-headline em { font-style: italic; color: var(--indigo-dim); }
+    .contact-sub {
+      font-size: 15px;
+      line-height: 1.8;
+      color: oklch(60% 0.02 265);
+      max-width: 44ch;
+      margin-bottom: 40px;
+    }
+    .contact-links { display: flex; gap: 12px; flex-wrap: wrap; }
+    .contact-email {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      background: var(--indigo);
+      color: #fff;
+      font-size: 13px;
+      font-weight: 600;
+      padding: 15px 26px;
+      border-radius: var(--r);
+      letter-spacing: -0.01em;
+      min-height: 48px;
+      touch-action: manipulation;
+      transition: background 0.22s var(--ease-out), transform 0.15s var(--ease-out);
+      box-shadow: 0 4px 20px oklch(50% 0.2 268 / 0.4);
+    }
+    .contact-email:hover { background: oklch(58% 0.18 268); transform: translateY(-2px); }
+    .contact-email:active { transform: scale(0.97); }
+    .contact-email svg { transition: transform 0.22s var(--ease-spring); }
+    .contact-email:hover svg { transform: translateX(4px); }
+    .contact-whatsapp {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      border: 1px solid oklch(100% 0 0 / 0.14);
+      color: oklch(60% 0.02 265);
+      font-size: 13px;
+      font-weight: 400;
+      padding: 15px 26px;
+      border-radius: var(--r);
+      transition: border-color 0.18s var(--ease-out), color 0.18s var(--ease-out), transform 0.15s var(--ease-out);
+      min-height: 48px;
+      touch-action: manipulation;
+    }
+    .contact-whatsapp:hover { border-color: oklch(100% 0 0 / 0.32); color: oklch(92% 0.005 265); }
+    .contact-whatsapp:active { transform: scale(0.97); }
+    .contact-crystal-col { opacity: 0.08; flex-shrink: 0; }
+
+    @media (max-width: 860px) {
+      .contact-inner { grid-template-columns: 1fr; gap: 0; padding: 72px 20px; }
+      .contact-crystal-col { display: none; }
+    }
+    @media (max-width: 480px) {
+      .contact-links { flex-direction: column; align-items: stretch; }
+      .contact-email, .contact-whatsapp { justify-content: center; }
+    }
+
+    /* ── FOOTER ── */
+    .footer { background: var(--dark-bg2); border-top: 1px solid oklch(100% 0 0 / 0.05); }
+    .footer-inner {
+      max-width: var(--maxw);
+      margin: 0 auto;
+      padding: 22px 48px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 16px;
+    }
+    .footer-copy { font-size: 11px; color: oklch(44% 0.01 265); }
+    .footer-nav { display: flex; gap: 24px; }
+    .footer-nav a {
+      font-size: 11px;
+      color: oklch(44% 0.01 265);
+      transition: color 0.15s var(--ease-out);
+      padding: 6px 2px;
+      min-height: 44px;
+      display: inline-flex;
+      align-items: center;
+    }
+    .footer-nav a:hover { color: oklch(62% 0.015 265); }
+
+    @media (max-width: 480px) {
+      .footer-inner { flex-direction: column; gap: 10px; text-align: center; padding: 18px 20px; }
+      .footer-nav { gap: 16px; flex-wrap: wrap; justify-content: center; }
+    }
+    @media (max-width: 720px) { .footer-inner { padding: 18px 20px; } }
+
+    /* ── SCROLL-TO-TOP ── */
+    .scroll-top {
+      position: fixed;
+      bottom: 28px; right: 28px;
+      z-index: 100;
+      width: 44px; height: 44px;
+      border-radius: 50%;
+      background: var(--bg);
+      border: 1px solid var(--line);
+      color: var(--text-dim);
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      opacity: 0;
+      transform: translateY(12px);
+      transition: opacity 0.25s var(--ease-out), transform 0.28s var(--ease-spring), background 0.15s var(--ease-out);
+      pointer-events: none;
+      touch-action: manipulation;
+      box-shadow: 0 2px 12px oklch(13% 0.04 265 / 0.08);
+    }
+    .scroll-top.visible { opacity: 1; transform: translateY(0); pointer-events: auto; }
+    .scroll-top:hover { background: var(--indigo-bg); color: var(--indigo); }
+    .scroll-top:active { transform: scale(0.95); }
+
   </style>
 </head>
 <body>
@@ -912,7 +1099,94 @@
   </div>
 </section>
 
-<!-- sections go here -->
+<!-- ABOUT -->
+<section class="about-section" id="about">
+  <div class="about-inner">
+    <div class="reveal">
+      <span class="t-label" style="display:block;margin-bottom:14px;">About</span>
+      <span class="about-rule" aria-hidden="true"></span>
+      <h2 class="about-title">Twenty years of making things clear.</h2>
+    </div>
+    <div class="about-body reveal" style="transition-delay:0.1s">
+      <p>
+        Twenty years of GTM experience across Fortune 500 enterprises and startups: B2B, B2B2C and D2C, spanning healthcare, tech, defense and beyond. I know the U.S. market from the inside, having lived and worked there for over a decade.
+      </p>
+      <p>
+        My background is an unusual mix: Computer Science, a Master's in Psychology from UPenn, and a career spent at the intersection of strategic clarity and human insight. I understand not just markets, but the people in them.
+      </p>
+    </div>
+  </div>
+</section>
+
+<!-- CONTACT -->
+<section class="contact-section" id="contact">
+  <div class="contact-bg-crystal" aria-hidden="true">
+    <svg width="540" height="700" viewBox="0 0 260 340" fill="none">
+      <g transform="translate(130,170)">
+        <polygon points="0,-150 -72,-55 0,-30" fill="var(--indigo)" opacity="0.18"/>
+        <polygon points="0,-150 72,-55 0,-30" fill="var(--indigo)" opacity="0.38"/>
+        <polygon points="-72,-55 -90,72 0,95 0,-30" fill="var(--indigo)" opacity="0.25"/>
+        <polygon points="72,-55 90,72 0,95 0,-30" fill="var(--indigo)" opacity="0.55"/>
+        <polygon points="-90,72 0,150 0,95" fill="var(--indigo)" opacity="0.12"/>
+        <polygon points="90,72 0,150 0,95" fill="var(--indigo)" opacity="0.62"/>
+        <polygon points="0,-150 72,-55 90,72 0,150 -90,72 -72,-55" stroke="var(--indigo)" stroke-opacity="0.35" stroke-width="0.75" fill="none"/>
+      </g>
+    </svg>
+  </div>
+
+  <div class="contact-inner">
+    <div class="reveal">
+      <h2 class="contact-headline">
+        If this sounds like<br>what you <em>need</em>,<br>let's talk.
+      </h2>
+      <p class="contact-sub">
+        I work with a small number of clients. If you're building something and can't afford to be misunderstood, reach out.
+      </p>
+      <div class="contact-links">
+        <a href="https://mail.google.com/mail/?view=cm&to=hagaiheshes@gmail.com" target="_blank" rel="noopener noreferrer" class="contact-email">
+          <span>hagaiheshes@gmail.com</span>
+          <svg width="14" height="14" viewBox="0 0 14 14" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M2 7h10M8 3l4 4-4 4"/></svg>
+        </a>
+        <a href="https://wa.me/972532851277" class="contact-whatsapp" target="_blank" rel="noopener noreferrer" aria-label="Contact via WhatsApp">
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413z"/></svg>
+          WhatsApp
+        </a>
+      </div>
+    </div>
+
+    <div class="contact-crystal-col" aria-hidden="true">
+      <svg width="160" height="210" viewBox="0 0 260 340" fill="none">
+        <g transform="translate(130,170)">
+          <polygon points="0,-150 -72,-55 0,-30" fill="var(--indigo)" opacity="0.18"/>
+          <polygon points="0,-150 72,-55 0,-30" fill="var(--indigo)" opacity="0.38"/>
+          <polygon points="-72,-55 -90,72 0,95 0,-30" fill="var(--indigo)" opacity="0.25"/>
+          <polygon points="72,-55 90,72 0,95 0,-30" fill="var(--indigo)" opacity="0.55"/>
+          <polygon points="-90,72 0,150 0,95" fill="var(--indigo)" opacity="0.12"/>
+          <polygon points="90,72 0,150 0,95" fill="var(--indigo)" opacity="0.62"/>
+          <polygon points="0,-150 72,-55 90,72 0,150 -90,72 -72,-55" stroke="var(--indigo)" stroke-opacity="0.35" stroke-width="0.75" fill="none"/>
+        </g>
+      </svg>
+    </div>
+  </div>
+</section>
+
+<!-- FOOTER -->
+<footer class="footer">
+  <div class="footer-inner">
+    <span class="footer-copy">&#169; 2026 Hagai Heshes. All rights reserved.</span>
+    <nav class="footer-nav" aria-label="Footer navigation">
+      <a href="#work">Work</a>
+      <a href="#how">Approach</a>
+      <a href="#about">About</a>
+      <a href="#contact">Contact</a>
+    </nav>
+  </div>
+</footer>
+
+<!-- Scroll-to-top -->
+<button class="scroll-top" id="scroll-top" aria-label="Back to top">
+  <svg width="14" height="14" viewBox="0 0 14 14" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M7 11V3M3 7l4-4 4 4"/></svg>
+</button>
 
 <script>
 (function () {
