@@ -598,38 +598,52 @@
 
     /* ── HOW I WORK ── */
     .how-section {
-      background: var(--bg);
-      border-bottom: 1px solid var(--line);
+      background: var(--dark-bg);
     }
     .how-inner {
-      max-width: var(--maxw);
+      max-width: 700px;
       margin: 0 auto;
-      padding: 96px 48px;
-      display: grid;
-      grid-template-columns: 1fr 1fr;
-      gap: 88px;
-      align-items: start;
+      padding: 104px 48px;
+      text-align: center;
     }
-    .how-label-col { padding-top: 8px; }
     .how-title {
       font-size: clamp(36px, 4.5vw, 56px);
       font-weight: 700;
-      letter-spacing: -0.045em;
-      color: var(--navy);
+      font-style: italic;
+      letter-spacing: -0.04em;
+      color: oklch(97% 0.004 265);
       line-height: 1.0;
-      margin-top: 18px;
+      margin-bottom: 72px;
     }
-    .how-body p {
-      font-size: 15.5px;
-      line-height: 1.82;
-      color: var(--text-body);
-      margin-bottom: 20px;
-      max-width: 50ch;
+    .how-steps {
+      list-style: none;
+      display: flex;
+      flex-direction: column;
+      gap: 44px;
+      text-align: left;
     }
-    .how-body p:last-child { margin-bottom: 0; }
+    .how-steps li {
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+    }
+    .how-step-num {
+      font-size: 10px;
+      font-weight: 700;
+      letter-spacing: 0.16em;
+      text-transform: uppercase;
+      color: var(--gold);
+    }
+    .how-steps li p {
+      font-size: 17px;
+      line-height: 1.72;
+      color: oklch(72% 0.012 265);
+      max-width: 52ch;
+    }
 
     @media (max-width: 720px) {
-      .how-inner { grid-template-columns: 1fr; gap: 32px; padding: 64px 20px; }
+      .how-inner { padding: 72px 20px; }
+      .how-title { margin-bottom: 52px; }
     }
 
     /* ── DELIVERABLES ── */
@@ -1078,15 +1092,21 @@
 <!-- HOW I WORK -->
 <section class="how-section" id="how">
   <div class="how-inner">
-    <div class="how-label-col reveal">
-      <span class="t-label" style="display:block;margin-bottom:18px;">Approach</span>
-      <h2 class="how-title">How I<br>work</h2>
-    </div>
-    <div class="how-body reveal" style="transition-delay:0.12s">
-      <p>I work with a small number of clients at a time. Deeply, not broadly.</p>
-      <p>No fluff, no shelfware. I move fast, get to the essential quickly, and leave you with something you can actually use.</p>
-      <p>Most clients come through referral.</p>
-    </div>
+    <h2 class="how-title reveal">How I work</h2>
+    <ol class="how-steps reveal" style="transition-delay:0.14s">
+      <li>
+        <span class="how-step-num">01</span>
+        <p>I work with a small number of clients at a time. Deeply, not broadly.</p>
+      </li>
+      <li>
+        <span class="how-step-num">02</span>
+        <p>No fluff, no shelfware. I move fast, get to the essential quickly, and leave you with something you can actually use.</p>
+      </li>
+      <li>
+        <span class="how-step-num">03</span>
+        <p>Most clients come through referral.</p>
+      </li>
+    </ol>
   </div>
 </section>
 
