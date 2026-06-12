@@ -17,7 +17,8 @@ Personal consulting website for **Hagai Heshes ("The Crystallizer")** — positi
 - **Accessibility:** focus-visible outlines, 44px+ touch targets, `aria-*` on nav/drawer, meaningful `alt`. Preserve these when editing.
 
 ## Mobile
-- Breakpoints in use: 480, 600, 680, 720, 840, 860px. Mobile nav uses a hamburger + `.mobile-drawer`. Hero crystal column is hidden ≤720px.
+- Breakpoints in use: 600px, 960px. At ≤600px: nav text links hidden (only logo + CTA), container padding reduced to 20px, font sizes scaled down. At ≤960px: single-column layout, crystal panel hidden.
+- **Verify mobile with screenshots:** use `npx playwright screenshot --browser chromium --viewport-size "390,844" "file:///c:/Cursor%20apps/dad%20pro%20web/index.html" /tmp/mobile.png` then `Read /tmp/mobile.png` to visually inspect. Add `--full-page` for the full scroll.
 
 ## Visual Direction
 - **Light site** — keep the light background (`--bg`) as the base tone. No full dark-mode redesign.
