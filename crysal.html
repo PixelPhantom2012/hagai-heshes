@@ -91,25 +91,25 @@
         .principle-desc { font-size: 14px; color: #666; line-height: 1.6; }
 
         /* About */
-        .about { display: grid; grid-template-columns: 1fr 1.5fr; }
-        .about-photo-col { overflow: hidden; }
+        .about { display: grid; grid-template-columns: 1fr 1.5fr; align-items: start; gap: 0; padding: 80px 0; }
+        .about-photo-col { aspect-ratio: 4/3; overflow: hidden; }
         .about-photo { width: 100%; height: 100%; object-fit: cover; object-position: center 15%; display: block; }
-        .about-right { padding: 80px 0 80px 64px; border-left: 1px solid var(--border-color); }
+        .about-right { padding: 0 0 0 48px; border-left: 1px solid var(--border-color); }
         .about-body { font-size: 15px; color: #444; line-height: 1.75; margin-bottom: 20px; }
-        .about-title { font-size: 36px; font-weight: 400; font-family: var(--font-serif); color: var(--text-dark); line-height: 1.25; letter-spacing: -0.01em; margin-top: 20px; margin-bottom: 32px; }
+        .about-title { font-size: 36px; font-weight: 400; font-family: var(--font-serif); color: var(--text-dark); line-height: 1.25; letter-spacing: -0.01em; margin-top: 20px; margin-bottom: 28px; }
 
         /* CTA Footer */
         .cta-footer { background: var(--bg-dark); color: #fff; padding: 96px 0; }
         .cta-footer .container { display: grid; grid-template-columns: 1.1fr 0.9fr; align-items: center; gap: 64px; }
         .cta-headline { font-size: 48px; font-weight: 400; font-family: var(--font-serif); line-height: 1.15; letter-spacing: -0.01em; }
         .cta-headline em { color: var(--accent-muted); font-style: italic; font-family: var(--font-serif); }
-        .cta-right { display: flex; flex-direction: column; gap: 20px; }
-        .cta-sub { font-size: 15px; color: #A5A4A0; line-height: 1.6; }
-        .cta-actions { display: flex; gap: 16px; align-items: center; margin-top: 12px; }
-        .btn-white { font-size: 14px; font-weight: 500; background: #fff; color: var(--bg-dark); padding: 14px 28px; border-radius: 4px; text-decoration: none; transition: background 0.2s, transform 0.2s; }
-        .btn-white:hover { background: var(--bg-light); transform: translateY(-1px); }
-        .btn-wa { font-size: 14px; color: #A5A4A0; display: flex; align-items: center; gap: 6px; text-decoration: none; font-weight: 500; transition: color 0.2s; }
-        .btn-wa:hover { color: #fff; }
+        .cta-right { display: flex; flex-direction: column; gap: 16px; }
+        .cta-actions { display: flex; gap: 16px; align-items: center; }
+        .btn-wa-primary { font-size: 14px; font-weight: 500; background: #fff; color: var(--bg-dark); padding: 14px 24px; border-radius: 4px; text-decoration: none; display: inline-flex; align-items: center; gap: 9px; transition: background 0.2s, transform 0.2s; }
+        .btn-wa-primary:hover { background: var(--bg-light); transform: translateY(-1px); }
+        .cta-email-plain { font-size: 14px; color: #6b6a66; margin-top: 4px; }
+        .cta-email-plain a { color: #A5A4A0; text-decoration: underline; text-underline-offset: 3px; text-decoration-color: rgba(165,164,160,0.4); transition: color 0.2s; }
+        .cta-email-plain a:hover { color: #fff; }
 
         /* Footer */
         .footer-bar { background: #0A0A0A; padding: 24px 0; border-top: 1px solid rgba(255,255,255,0.03); }
@@ -334,11 +334,15 @@
         <div class="container">
             <h2 class="cta-headline">If this sounds like what you <em>need</em>, let's talk.</h2>
             <div class="cta-right">
-                <p class="cta-sub">I work with a small number of clients. If you're building something and can't afford to be misunderstood, reach out.</p>
                 <div class="cta-actions">
-                    <a class="btn-white" href="mailto:hagai@hagaiheshes.com">hagai@hagaiheshes.com</a>
-                    <a class="btn-wa" href="#">WhatsApp &rarr;</a>
+                    <a class="btn-wa-primary" href="https://wa.me/972532851277">
+                        <svg width="18" height="18" viewBox="0 0 18 18" fill="currentColor" xmlns="http://www.w3.org/2000/svg">
+                            <path d="M9 0C4.03 0 0 4.03 0 9c0 1.58.41 3.07 1.14 4.36L0 18l4.77-1.12A8.96 8.96 0 0 0 9 18c4.97 0 9-4.03 9-9S13.97 0 9 0zm4.42 12.67c-.19.52-1.1 1-1.52 1.06-.39.06-.88.08-1.42-.09-.33-.1-.75-.25-1.29-.48-2.26-.97-3.73-3.27-3.84-3.42-.12-.15-.94-1.25-.94-2.39 0-1.14.59-1.7.8-1.93.22-.23.47-.29.63-.29h.45c.15 0 .35-.06.54.41.2.48.68 1.64.74 1.76.06.12.1.26.02.42-.08.16-.12.26-.23.39-.12.14-.25.31-.35.42-.12.12-.24.25-.1.48.14.23.6.97 1.28 1.57.88.77 1.63 1.01 1.86 1.12.23.12.37.1.51-.06.14-.16.59-.68.74-.92.16-.23.32-.19.53-.11.21.08 1.35.64 1.58.75.23.12.39.17.45.27.06.1.06.55-.13 1.07z"/>
+                        </svg>
+                        WhatsApp
+                    </a>
                 </div>
+                <p class="cta-email-plain">or email me at <a href="mailto:hagaiheshes@gmail.com">hagaiheshes@gmail.com</a></p>
             </div>
         </div>
     </section>
