@@ -19,7 +19,9 @@
       "Bash(Read \"C:\\\\Users\\\\user\\\\AppData\\\\Local\\\\Temp\\\\claude\\\\C--Cursor-apps-dad-pro-web\\\\6d16271e-9358-4259-bd7b-a0bc675d369e\\\\tasks\\\\bsqaouokt.output\")",
       "Bash(npx playwright *)",
       "Bash(npm install *)",
-      "Bash('.how-section')"
+      "Bash('.how-section')",
+      "PowerShell(npx skills add supabase/agent-skills)",
+      "PowerShell(npx skills search expo)"
     ]
   }
 }

@@ -20,8 +20,38 @@
             --border-color: rgba(26, 26, 25, 0.08);
         }
 
+        html { scroll-behavior: smooth; scroll-padding-top: 52px; }
         * { box-sizing: border-box; margin: 0; padding: 0; }
         body { font-family: var(--font-sans); background: var(--bg-light); color: var(--text-dark); -webkit-font-smoothing: antialiased; }
+
+        /* Entrance animations */
+        @keyframes fadeUp {
+            from { opacity: 0; transform: translateY(22px); }
+            to   { opacity: 1; transform: translateY(0);    }
+        }
+        .hero-title { animation: fadeUp 0.72s cubic-bezier(0.22,1,0.36,1) both; }
+        .hero-sub   { animation: fadeUp 0.72s cubic-bezier(0.22,1,0.36,1) 0.14s both; }
+        .btn-primary-hero { animation: fadeUp 0.72s cubic-bezier(0.22,1,0.36,1) 0.26s both; }
+
+        /* Scroll reveal */
+        .reveal {
+            opacity: 0;
+            transform: translateY(22px);
+            transition: opacity 0.65s ease, transform 0.65s cubic-bezier(0.22,1,0.36,1);
+        }
+        .reveal.visible { opacity: 1; transform: none; }
+
+        .stagger {
+            opacity: 0;
+            transform: translateY(18px);
+            transition: opacity 0.55s ease, transform 0.55s cubic-bezier(0.22,1,0.36,1);
+        }
+        .stagger.visible { opacity: 1; transform: none; }
+
+        @media (prefers-reduced-motion: reduce) {
+            .hero-title, .hero-sub, .btn-primary-hero { animation: none; opacity: 1; }
+            .reveal, .stagger { opacity: 1; transform: none; transition: none; }
+        }
 
         .container { max-width: 1200px; margin: 0 auto; padding: 0 40px; }
 
@@ -168,7 +198,7 @@
             <div class="hero-left">
                 <h1 class="hero-title">The<br><em>Crystallizer</em></h1>
                 <p class="hero-sub">You know what you've built. I make sure everyone else does too.<br>I distill what you're really about, then help you take it to market.</p>
-                <a class="btn-primary" href="#contact">Let's talk</a>
+                <a class="btn-primary btn-primary-hero" href="#contact">Let's talk</a>
             </div>
         </div>
 
@@ -179,15 +209,15 @@
 
     <section id="services" class="capabilities">
         <div class="container">
-            <h2 class="cap-heading">Core Capabilities</h2>
+            <h2 class="cap-heading reveal">Core Capabilities</h2>
             <div class="cap-grid">
-                <div class="cap-card">
+                <div class="cap-card stagger">
                     <h3 class="cap-title">Crystallization</h3>
                     <p class="cap-desc">I absorb everything about your company and compress it into something essential: what you are, who you're truly for, why you win, and how to talk about it.</p>
                     <span class="cap-deliverables-label">Deliverables</span>
                     <p class="cap-deliverables">Positioning &amp; messaging &nbsp;·&nbsp; Value propositions &nbsp;·&nbsp; Company narrative &nbsp;·&nbsp; Investor story</p>
                 </div>
-                <div class="cap-card">
+                <div class="cap-card stagger">
                     <h3 class="cap-title">Go-to-Market</h3>
                     <p class="cap-desc">Once the foundation is solid, we go on the attack: the right motion, channels, and sequence to take it to market.</p>
                     <span class="cap-deliverables-label">Deliverables</span>
@@ -201,13 +231,13 @@
         <div class="container">
             <p class="section-label">Selected Clients</p>
             <div class="clients-row">
-                <img class="client-logo client-logo-monday" src="logos/monday_logo-removebg-preview.png" alt="Monday.com">
-                <img class="client-logo" src="logos/tytocare_logo-removebg-preview.png" alt="TytoCare">
-                <img class="client-logo" src="logos/quantalx_logo-removebg-preview.png" alt="QuantalX">
-                <img class="client-logo" src="logos/wd_logo-removebg-preview.png" alt="Western Digital">
-                <img class="client-logo client-logo-seagate" src="logos/seagate_logo-removebg-preview.png" alt="Seagate">
-                <img class="client-logo" src="logos/wix_logo-removebg-preview.png" alt="Wix">
-                <img class="client-logo" src="logos/Band-Logo.webp" alt="BAND">
+                <img class="client-logo client-logo-monday stagger" src="logos/monday_logo-removebg-preview.png" alt="Monday.com">
+                <img class="client-logo stagger" src="logos/tytocare_logo-removebg-preview.png" alt="TytoCare">
+                <img class="client-logo stagger" src="logos/quantalx_logo-removebg-preview.png" alt="QuantalX">
+                <img class="client-logo stagger" src="logos/wd_logo-removebg-preview.png" alt="Western Digital">
+                <img class="client-logo client-logo-seagate stagger" src="logos/seagate_logo-removebg-preview.png" alt="Seagate">
+                <img class="client-logo stagger" src="logos/wix_logo-removebg-preview.png" alt="Wix">
+                <img class="client-logo stagger" src="logos/Band-Logo.webp" alt="BAND">
             </div>
         </div>
     </div>
@@ -216,14 +246,14 @@
         <div class="container" id="approach">
             <section class="approach">
                 <div class="approach-left">
-                    <p class="section-label">Methodology</p>
-                    <h2 class="approach-title">How I<br>work</h2>
+                    <p class="section-label reveal">Methodology</p>
+                    <h2 class="approach-title reveal">How I<br>work</h2>
                 </div>
                 <div class="approach-right">
                     <div class="principles-grid">
 
                         <!-- Q1: Speed & Action -->
-                        <div class="principle">
+                        <div class="principle stagger">
                             <svg class="principle-icon" width="20" height="20" viewBox="0 0 20 20" fill="none" xmlns="http://www.w3.org/2000/svg">
                                 <path d="M3 10h14M13 5l5 5-5 5" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
                             </svg>
@@ -232,7 +262,7 @@
                         </div>
 
                         <!-- Q2: Market Authority -->
-                        <div class="principle">
+                        <div class="principle stagger">
                             <svg class="principle-icon" width="20" height="20" viewBox="0 0 20 20" fill="none" xmlns="http://www.w3.org/2000/svg">
                                 <circle cx="10" cy="10" r="7.5" stroke="currentColor" stroke-width="1.5"/>
                                 <path d="M10 2.5C10 2.5 13 5.5 13 10s-3 7.5-3 7.5M10 2.5C10 2.5 7 5.5 7 10s3 7.5 3 7.5" stroke="currentColor" stroke-width="1" opacity="0.7"/>
@@ -243,7 +273,7 @@
                         </div>
 
                         <!-- Q3: Process Iteration -->
-                        <div class="principle">
+                        <div class="principle stagger">
                             <svg class="principle-icon" width="20" height="20" viewBox="0 0 20 20" fill="none" xmlns="http://www.w3.org/2000/svg">
                                 <path d="M15 4.5A7 7 0 1 1 5 15" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/>
                                 <path d="M15 4.5V8.5H11" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
@@ -253,7 +283,7 @@
                         </div>
 
                         <!-- Q4: Scarcity & Dedication -->
-                        <div class="principle">
+                        <div class="principle stagger">
                             <svg class="principle-icon" width="20" height="20" viewBox="0 0 20 20" fill="none" xmlns="http://www.w3.org/2000/svg">
                                 <path d="M10 2L18 10L10 18L2 10L10 2Z" stroke="currentColor" stroke-width="1.5" fill="none"/>
                                 <circle cx="10" cy="10" r="2.5" fill="currentColor"/>
@@ -270,10 +300,10 @@
 
     <div class="container" id="about">
         <section class="about">
-            <div class="about-photo-col">
+            <div class="about-photo-col reveal">
                 <img class="about-photo" src="logos/hagai.jpeg" alt="Hagai Heshes">
             </div>
-            <div class="about-right">
+            <div class="about-right reveal">
                 <p class="section-label">Background</p>
                 <h2 class="about-title">Twenty years of making things clear.</h2>
                 <p class="about-body">Twenty years of GTM experience across Fortune 500 and startups. B2B, B2B2C and D2C, spanning healthcare, tech, defense and beyond. I know the U.S. market from the inside, having lived and worked there for over a decade.</p>
@@ -284,8 +314,8 @@
 
     <section id="contact" class="cta-footer">
         <div class="container">
-            <h2 class="cta-headline">If this sounds like what you <em>need</em>, let's talk.</h2>
-            <div class="cta-right">
+            <h2 class="cta-headline reveal">If this sounds like what you <em>need</em>, let's talk.</h2>
+            <div class="cta-right reveal">
                 <div class="cta-actions">
                     <a class="btn-wa-primary" href="https://wa.me/972532851277">
                         <svg width="18" height="18" viewBox="0 0 18 18" fill="currentColor" xmlns="http://www.w3.org/2000/svg">
@@ -310,6 +340,44 @@
             </div>
         </div>
     </div>
+
+    <script>
+        (function () {
+            // Stagger delays
+            document.querySelectorAll('.clients-row .stagger').forEach(function (el, i) {
+                el.style.transitionDelay = (i * 0.07) + 's';
+            });
+            document.querySelectorAll('.principles-grid .stagger').forEach(function (el, i) {
+                el.style.transitionDelay = (i * 0.1) + 's';
+            });
+            document.querySelectorAll('.cap-grid .stagger').forEach(function (el, i) {
+                el.style.transitionDelay = (i * 0.12) + 's';
+            });
+            // About section — slight delay between photo and text
+            var aboutReveals = document.querySelectorAll('.about .reveal');
+            aboutReveals.forEach(function (el, i) {
+                el.style.transitionDelay = (i * 0.15) + 's';
+            });
+            // CTA — text first, then actions
+            var ctaReveals = document.querySelectorAll('.cta-footer .reveal');
+            ctaReveals.forEach(function (el, i) {
+                el.style.transitionDelay = (i * 0.18) + 's';
+            });
+
+            var observer = new IntersectionObserver(function (entries) {
+                entries.forEach(function (entry) {
+                    if (entry.isIntersecting) {
+                        entry.target.classList.add('visible');
+                        observer.unobserve(entry.target);
+                    }
+                });
+            }, { threshold: 0.12 });
+
+            document.querySelectorAll('.reveal, .stagger').forEach(function (el) {
+                observer.observe(el);
+            });
+        })();
+    </script>
 
 </body>
 </html>
