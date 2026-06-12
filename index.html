@@ -46,7 +46,7 @@
         .btn-primary { font-size: 14px; font-weight: 500; background: var(--accent-blue); color: #fff; padding: 14px 28px; border-radius: 4px; text-decoration: none; transition: transform 0.2s, background 0.2s; display: inline-block; }
         .btn-primary:hover { background: #1e1bc7; transform: translateY(-1px); }
 
-        /* Hero Crystal SVG panel */
+        /* Hero Crystal video panel */
         .hero-crystal {
             position: absolute;
             right: 0;
@@ -162,8 +162,8 @@
         </div>
 
         <div class="hero-crystal">
-            <video autoplay loop muted playsinline>
-                <source src="animation/crystal-loop.mp4" type="video/mp4">
+            <video autoplay muted playsinline>
+                <source src="animation/crystal-forward.mp4" type="video/mp4">
             </video>
         </div>
     </section>
@@ -302,5 +302,21 @@
         </div>
     </div>
 
+<script>
+(function () {
+    var vid = document.querySelector('.hero-crystal video');
+    if (!vid) return;
+    vid.playbackRate = 1.8;
+    vid.addEventListener('timeupdate', function () {
+        if (!vid.duration) return;
+        var pct = vid.currentTime / vid.duration;
+        if (pct > 0.6) {
+            var t = (pct - 0.6) / 0.4;
+            var rate = 1.8 - t * 1.55;
+            vid.playbackRate = Math.max(0.25, rate);
+        }
+    });
+}());
+</script>
 </body>
 </html>

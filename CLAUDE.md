@@ -27,3 +27,8 @@ Personal consulting website for **Hagai Heshes ("The Crystallizer")** — positi
 ## Working agreement
 - This is a spec/docs agent context: produce `spec.md`, do not write application code.
 - Preserve color palette, fonts, crystal geometry, existing mobile CSS, and accessibility features unless a change explicitly requires otherwise.
+
+## Deployment — NEVER auto-push
+- **The site is live at https://pixelphantom2012.github.io/dad-pro-web/**
+- **NEVER run `git commit` or `git push` without explicit user confirmation.** Always show what will be committed and ask first.
+- After making file changes, stop and ask: "Ready to push?" — do not proceed automatically.
