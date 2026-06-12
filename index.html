@@ -57,7 +57,7 @@
             mask-image: linear-gradient(to left, rgba(0,0,0,1) 55%, rgba(0,0,0,0) 100%);
             -webkit-mask-image: linear-gradient(to left, rgba(0,0,0,1) 55%, rgba(0,0,0,0) 100%);
         }
-        .hero-crystal video { width: 100%; height: 100%; object-fit: cover; object-position: center; display: block; }
+        .hero-crystal img { width: 100%; height: 100%; object-fit: cover; object-position: center; display: block; }
 
         /* Core Capabilities */
         .capabilities { padding: 96px 0; border-bottom: 1px solid var(--border-color); }
@@ -162,9 +162,7 @@
         </div>
 
         <div class="hero-crystal">
-            <video autoplay muted playsinline>
-                <source src="animation/crystal-forward.mp4" type="video/mp4">
-            </video>
+            <img src="images/crystal.png" alt="">
         </div>
     </section>
 
@@ -302,21 +300,5 @@
         </div>
     </div>
 
-<script>
-(function () {
-    var vid = document.querySelector('.hero-crystal video');
-    if (!vid) return;
-    vid.playbackRate = 1.8;
-    vid.addEventListener('timeupdate', function () {
-        if (!vid.duration) return;
-        var pct = vid.currentTime / vid.duration;
-        if (pct > 0.6) {
-            var t = (pct - 0.6) / 0.4;
-            var rate = 1.8 - t * 1.55;
-            vid.playbackRate = Math.max(0.25, rate);
-        }
-    });
-}());
-</script>
 </body>
 </html>
