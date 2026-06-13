@@ -1,0 +1,158 @@
+<!--
+  HERO BACKUP — updated 2026-06-13
+  To restore: copy the CSS block into the <style> tag,
+  and replace the HTML block in index.html.
+  Also add the responsive nav border-radius fixes to the media queries (see bottom of this file).
+-->
+
+<!-- ═══════════════════════════════════════════
+     CSS — paste inside <style>, replacing lines
+     from "Nav" comment down to ".hero-crystal img"
+     ═══════════════════════════════════════════ -->
+<style>
+        /* Nav — dark glass over hero by default, light when scrolled past */
+        .nav { background: rgba(255,255,255,0.06); backdrop-filter: blur(32px) saturate(180%); -webkit-backdrop-filter: blur(32px) saturate(180%); border-bottom: 1px solid rgba(255,255,255,0.12); box-shadow: inset 0 1px 0 rgba(255,255,255,0.22); border-radius: 48px 48px 0 0; margin: 0; position: sticky; top: 0; z-index: 100; transition: background 0.35s, border-color 0.35s; }
+        .nav.nav--light { background: rgba(248, 247, 244, 0.94); border-bottom: 1px solid var(--border-color); border-radius: 0; backdrop-filter: blur(14px); -webkit-backdrop-filter: blur(14px); }
+        .nav .container { display: flex; align-items: center; justify-content: space-between; height: var(--nav-h); }
+        .nav-logo { display: flex; align-items: center; gap: 10px; font-weight: 600; font-size: 15px; letter-spacing: -0.01em; color: #fff; transition: color 0.35s; }
+        .nav--light .nav-logo { color: var(--text-dark); }
+        .nav-logo-crystal { display: flex; align-items: center; }
+        .crystal-base { fill: rgba(255,255,255,0.82); transition: fill 0.35s; }
+        .nav--light .crystal-base { fill: #2D2AE8; }
+        .crystal-shade { fill: rgba(255,255,255,0.07); transition: fill 0.35s; }
+        .nav--light .crystal-shade { fill: rgba(0,0,50,0.18); }
+        .nav-links { display: flex; align-items: center; gap: 32px; }
+        .nav-link { font-size: 14px; color: rgba(255,255,255,0.60); text-decoration: none; font-weight: 500; transition: color 0.2s; }
+        .nav-link:hover { color: #fff; }
+        .nav--light .nav-link { color: #666; }
+        .nav--light .nav-link:hover { color: var(--text-dark); }
+        .nav-cta { font-size: 14px; font-weight: 500; background: rgba(255,255,255,0.10); border: 1px solid rgba(255,255,255,0.22); color: #fff; padding: 10px 22px; border-radius: 4px; text-decoration: none; transition: background 0.2s, border-color 0.35s, color 0.35s; }
+        .nav-cta:hover { background: rgba(255,255,255,0.20); }
+        .nav--light .nav-cta { background: var(--text-dark); border-color: transparent; color: #fff; }
+        .nav--light .nav-cta:hover { background: var(--accent-blue); }
+
+        /* Hero shell */
+        .hero-shell {
+            background: linear-gradient(135deg, #1e2633 0%, #18202c 50%, #10151f 100%);
+            border-radius: 48px 48px 0 0;
+            margin: 20px 16px 0;
+            position: relative;
+        }
+
+        /* Hero */
+        .hero { background: transparent; color: #fff; position: relative; overflow: hidden; }
+        .hero .container { display: grid; grid-template-columns: 1.2fr 0.8fr; min-height: 580px; align-items: center; position: relative; z-index: 3; }
+        .hero-left { padding: 80px 0; }
+        .hero-title { font-size: 68px; font-weight: 400; line-height: 1.05; font-family: var(--font-serif); margin-bottom: 28px; letter-spacing: -0.02em; }
+        .hero-sub { font-size: 17px; color: rgba(190,212,232,0.72); line-height: 1.68; max-width: 440px; margin-bottom: 40px; font-weight: 400; }
+        .btn-primary { font-size: 14px; font-weight: 500; background: rgba(255,255,255,0.09); border: 1px solid rgba(255,255,255,0.22); color: #fff; padding: 13px 28px; border-radius: 6px; text-decoration: none; transition: transform 0.2s, background 0.2s; display: inline-block; letter-spacing: 0.01em; }
+        .btn-primary:hover { background: rgba(255,255,255,0.18); transform: translateY(-1px); }
+
+        /* Hero mesh overlay */
+        .hero-mesh { position: absolute; inset: 0; z-index: 1; pointer-events: none; }
+
+        /* Hero crystal */
+        .hero-crystal { position: absolute; right: -60px; top: 50%; transform: translateY(-50%); width: 58%; max-width: 680px; z-index: 2; pointer-events: none; mask-image: linear-gradient(to left, rgba(0,0,0,0.95) 55%, rgba(0,0,0,0) 100%); -webkit-mask-image: linear-gradient(to left, rgba(0,0,0,0.95) 55%, rgba(0,0,0,0) 100%); }
+        .hero-crystal img { width: 100%; height: auto; display: block; }
+</style>
+
+<!-- ═══════════════════════════════════════════
+     HTML — replaces the <div class="hero-shell">
+     block in index.html (including closing </div>)
+     ═══════════════════════════════════════════ -->
+
+    <div class="hero-shell">
+    <nav class="nav">
+        <div class="container">
+            <div class="nav-logo">
+                <span class="nav-logo-crystal">
+                    <svg width="13" height="15" viewBox="0 0 13 15" fill="none" xmlns="http://www.w3.org/2000/svg">
+                        <polygon class="crystal-base" points="6.5,0.5 12,5 9.5,14.5 3.5,14.5 1,5"/>
+                        <polygon points="6.5,0.5 12,5 6.5,3.2" fill="rgba(255,255,255,0.38)"/>
+                        <polygon class="crystal-shade" points="1,5 12,5 9.5,14.5 3.5,14.5"/>
+                    </svg>
+                </span>
+                <span>Hagai Heshes</span>
+            </div>
+            <div class="nav-links">
+                <a class="nav-link" href="#services">Services</a>
+                <a class="nav-link" href="#approach">Approach</a>
+                <a class="nav-link" href="#about">About</a>
+                <a class="nav-cta" href="#contact">Get in touch</a>
+            </div>
+        </div>
+    </nav>
+    <section class="hero">
+        <svg class="hero-mesh" aria-hidden="true" viewBox="0 0 1440 640" preserveAspectRatio="xMidYMid slice" fill="none" xmlns="http://www.w3.org/2000/svg">
+            <g stroke="rgba(148,163,184,0.28)" stroke-width="0.75" fill="none">
+                <line x1="0" y1="220" x2="320" y2="80"/>
+                <line x1="0" y1="420" x2="260" y2="310"/>
+                <line x1="150" y1="0" x2="320" y2="310"/>
+                <line x1="320" y1="80" x2="260" y2="310"/>
+                <line x1="260" y1="310" x2="320" y2="80"/>
+                <line x1="0" y1="220" x2="260" y2="310"/>
+                <line x1="320" y1="80" x2="620" y2="40"/>
+                <line x1="620" y1="40" x2="760" y2="200"/>
+                <line x1="320" y1="80" x2="760" y2="200"/>
+                <line x1="260" y1="310" x2="560" y2="380"/>
+                <line x1="560" y1="380" x2="760" y2="200"/>
+                <line x1="320" y1="80" x2="560" y2="380"/>
+                <line x1="560" y1="380" x2="480" y2="640"/>
+                <line x1="260" y1="310" x2="480" y2="640"/>
+                <line x1="760" y1="200" x2="1020" y2="80"/>
+                <line x1="1020" y1="80" x2="1200" y2="160"/>
+                <line x1="760" y1="200" x2="1200" y2="160"/>
+                <line x1="1200" y1="160" x2="1320" y2="0"/>
+                <line x1="1200" y1="160" x2="1440" y2="120"/>
+                <line x1="1320" y1="0" x2="1440" y2="120"/>
+                <line x1="760" y1="200" x2="980" y2="400"/>
+                <line x1="1200" y1="160" x2="980" y2="400"/>
+                <line x1="980" y1="400" x2="1440" y2="320"/>
+                <line x1="1200" y1="160" x2="1440" y2="320"/>
+                <line x1="980" y1="400" x2="1100" y2="580"/>
+                <line x1="1100" y1="580" x2="1440" y2="500"/>
+                <line x1="1440" y1="320" x2="1100" y2="580"/>
+                <line x1="480" y1="640" x2="980" y2="400"/>
+                <line x1="760" y1="200" x2="560" y2="380"/>
+                <line x1="620" y1="40" x2="980" y2="400"/>
+                <line x1="1020" y1="80" x2="980" y2="400"/>
+                <line x1="1020" y1="80" x2="1100" y2="580"/>
+            </g>
+            <g fill="rgba(148,163,184,0.35)">
+                <circle cx="320" cy="80" r="1.8"/>
+                <circle cx="620" cy="40" r="1.8"/>
+                <circle cx="760" cy="200" r="1.8"/>
+                <circle cx="1020" cy="80" r="1.8"/>
+                <circle cx="1200" cy="160" r="1.8"/>
+                <circle cx="560" cy="380" r="1.5"/>
+                <circle cx="980" cy="400" r="1.8"/>
+                <circle cx="1100" cy="580" r="1.5"/>
+            </g>
+        </svg>
+        <div class="container">
+            <div class="hero-left">
+                <h1 class="hero-title">The<br>Crystallizer.</h1>
+                <p class="hero-sub">You know what you've built. I make sure everyone else does too.<br>I distill what you're really about, then help you take it to market.</p>
+                <a class="btn-primary btn-primary-hero" href="#contact">Let's Talk</a>
+            </div>
+        </div>
+
+<!-- ═══════════════════════════════════════════
+     RESPONSIVE FIXES — add inside the existing
+     media query blocks in <style>
+     ═══════════════════════════════════════════ -->
+<!--
+  @media (max-width: 960px):
+    .nav { border-radius: 28px 28px 0 0; }
+
+  @media (max-width: 600px):
+    .nav { border-radius: 20px 20px 0 0; }
+
+  These match the hero-shell border-radius at each breakpoint,
+  preventing the double-border "two circles" visual bug on mobile.
+-->
+        <div class="hero-crystal">
+            <img src="images/crystal.svg" alt="" width="560" height="640">
+        </div>
+    </section>
+    </div>

@@ -13,7 +13,7 @@ Personal consulting website for **Hagai Heshes ("The Crystallizer")** — positi
 - **Layout:** `.wrap` / inner containers use `max-width: var(--maxw)` centered with `padding: 0 32px` (20px on mobile).
 - **Sections:** each major block is a `<section>` with an `id` for anchor nav; styles grouped under banner comments.
 - **Animation:** scroll reveals via `.reveal` / `.reveal-left` / `.stagger` toggled by `IntersectionObserver`; `body.loaded` drives hero entrance. Respect `prefers-reduced-motion` (a global reduce rule exists).
-- **Crystal motif:** an inline faceted-polygon SVG (gold `#b8975a` facets) reused at several sizes (nav mark, hero, contact). Scale via `width`/`height`; never alter polygon geometry.
+- **Crystal motif:** The canonical crystal file is `images/crystal.svg` — a blue faceted-polygon SVG used in the hero and CTA sections via `<img>`. The nav also has a small inline SVG crystal mark (separate, in HTML). Never replace or regenerate `images/crystal.svg`; it is the approved final version. Scale via `width`/`height` attributes only; never alter polygon geometry.
 - **Accessibility:** focus-visible outlines, 44px+ touch targets, `aria-*` on nav/drawer, meaningful `alt`. Preserve these when editing.
 
 ## Mobile

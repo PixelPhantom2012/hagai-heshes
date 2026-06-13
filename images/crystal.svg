@@ -46,9 +46,6 @@
     <polygon points="530,240 556,258 552,318 524,330 514,285" fill="url(#f3)" opacity="0.60"/>
     <polygon points="315,10 500,140 430,55 390,8" fill="#C8E8F8" opacity="0.55"/>
 
-    <rect width="560" height="640" fill="url(#glow)"/>
-    <rect width="560" height="640" fill="url(#glow2)"/>
-
     <line x1="260" y1="25" x2="500" y2="140" stroke="rgba(180,220,248,0.60)" stroke-width="1.8"/>
     <line x1="500" y1="140" x2="555" y2="210" stroke="rgba(130,175,210,0.45)" stroke-width="1.2"/>
     <line x1="260" y1="25" x2="315" y2="10" stroke="rgba(210,238,255,0.75)" stroke-width="1.5"/>
