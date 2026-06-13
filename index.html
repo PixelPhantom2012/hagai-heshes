@@ -14,15 +14,17 @@
             --font-serif: 'Playfair Display', Georgia, serif;
             --bg-light: #F8F7F4;
             --bg-dark: #121211;
+            --hero-bg: #0B1528;
             --text-dark: #1A1A19;
             --accent-blue: #2D2AE8;
             --accent-muted: #7F77DD;
             --border-color: rgba(26, 26, 25, 0.08);
+            --nav-h: 68px;
         }
 
-        html { scroll-behavior: smooth; scroll-padding-top: 52px; }
+        html { scroll-behavior: smooth; scroll-padding-top: 52px; overflow-x: hidden; }
         * { box-sizing: border-box; margin: 0; padding: 0; }
-        body { font-family: var(--font-sans); background: var(--bg-light); color: var(--text-dark); -webkit-font-smoothing: antialiased; }
+        body { font-family: var(--font-sans); background: var(--bg-light); color: var(--text-dark); -webkit-font-smoothing: antialiased; overflow-x: hidden; width: 100%; }
 
         /* Entrance animations */
         @keyframes fadeUp {
@@ -55,39 +57,69 @@
 
         .container { max-width: 1200px; margin: 0 auto; padding: 0 40px; }
 
-        /* Nav */
-        .nav { background: var(--bg-light); border-bottom: 1px solid var(--border-color); position: sticky; top: 0; z-index: 100; }
-        .nav .container { display: flex; align-items: center; justify-content: space-between; height: 52px; }
-        .nav-logo { display: flex; align-items: center; gap: 10px; font-weight: 600; font-size: 14px; letter-spacing: -0.01em; }
+        /* Nav — dark glass over hero by default, light when scrolled past */
+        .nav { background: rgba(10, 15, 30, 0.50); backdrop-filter: blur(14px); -webkit-backdrop-filter: blur(14px); border-bottom: 1px solid rgba(255,255,255,0.08); position: sticky; top: 0; z-index: 100; transition: background 0.35s, border-color 0.35s; }
+        .nav.nav--light { background: rgba(248, 247, 244, 0.92); border-bottom: 1px solid var(--border-color); }
+        .nav .container { display: flex; align-items: center; justify-content: space-between; height: var(--nav-h); }
+        .nav-logo { display: flex; align-items: center; gap: 10px; font-weight: 600; font-size: 15px; letter-spacing: -0.01em; color: #fff; transition: color 0.35s; }
+        .nav--light .nav-logo { color: var(--text-dark); }
         .nav-logo-crystal { display: flex; align-items: center; }
+        .crystal-base { fill: rgba(255,255,255,0.82); transition: fill 0.35s; }
+        .nav--light .crystal-base { fill: #2D2AE8; }
+        .crystal-shade { fill: rgba(255,255,255,0.07); transition: fill 0.35s; }
+        .nav--light .crystal-shade { fill: rgba(0,0,50,0.18); }
         .nav-links { display: flex; align-items: center; gap: 32px; }
-        .nav-link { font-size: 13px; color: #666; text-decoration: none; font-weight: 500; transition: color 0.2s; }
-        .nav-link:hover { color: var(--text-dark); }
-        .nav-cta { font-size: 13px; font-weight: 500; background: var(--text-dark); color: #fff; padding: 8px 18px; border-radius: 4px; text-decoration: none; transition: background 0.2s; }
-        .nav-cta:hover { background: var(--accent-blue); }
+        .nav-link { font-size: 14px; color: rgba(255,255,255,0.60); text-decoration: none; font-weight: 500; transition: color 0.2s; }
+        .nav-link:hover { color: #fff; }
+        .nav--light .nav-link { color: #666; }
+        .nav--light .nav-link:hover { color: var(--text-dark); }
+        .nav-cta { font-size: 14px; font-weight: 500; background: rgba(255,255,255,0.10); border: 1px solid rgba(255,255,255,0.22); color: #fff; padding: 10px 22px; border-radius: 4px; text-decoration: none; transition: background 0.2s, border-color 0.35s, color 0.35s; }
+        .nav-cta:hover { background: rgba(255,255,255,0.20); }
+        .nav--light .nav-cta { background: var(--text-dark); border-color: transparent; color: #fff; }
+        .nav--light .nav-cta:hover { background: var(--accent-blue); }
+
+        /* Hero shell — dark rounded card behind the sticky nav */
+        .hero-shell {
+            background: linear-gradient(135deg, #1e2633 0%, #18202c 50%, #10151f 100%);
+            border-radius: 20px 20px 0 0;
+            overflow: clip;
+            margin: calc(-1 * var(--nav-h)) 16px 0;
+            padding-top: var(--nav-h);
+            position: relative;
+        }
 
         /* Hero */
-        .hero { background: var(--bg-dark); color: #fff; position: relative; overflow: hidden; }
-        .hero .container { display: grid; grid-template-columns: 1.2fr 0.8fr; min-height: 600px; align-items: center; position: relative; z-index: 2; }
+        .hero { background: transparent; color: #fff; position: relative; overflow: hidden; }
+        .hero .container { display: grid; grid-template-columns: 1.2fr 0.8fr; min-height: 580px; align-items: center; position: relative; z-index: 3; }
         .hero-left { padding: 80px 0; }
         .hero-title { font-size: 68px; font-weight: 400; line-height: 1.05; font-family: var(--font-serif); margin-bottom: 28px; letter-spacing: -0.02em; }
         .hero-title em { font-style: italic; font-family: var(--font-serif); font-weight: 400; opacity: 0.9; }
-        .hero-sub { font-size: 18px; color: #A5A4A0; line-height: 1.6; max-width: 460px; margin-bottom: 40px; font-weight: 400; }
-        .btn-primary { font-size: 14px; font-weight: 500; background: var(--accent-blue); color: #fff; padding: 14px 28px; border-radius: 4px; text-decoration: none; transition: transform 0.2s, background 0.2s; display: inline-block; }
-        .btn-primary:hover { background: #1e1bc7; transform: translateY(-1px); }
+        .hero-sub { font-size: 17px; color: rgba(190,212,232,0.72); line-height: 1.68; max-width: 440px; margin-bottom: 40px; font-weight: 400; }
+        .btn-primary { font-size: 14px; font-weight: 500; background: rgba(255,255,255,0.09); border: 1px solid rgba(255,255,255,0.22); color: #fff; padding: 13px 28px; border-radius: 6px; text-decoration: none; transition: transform 0.2s, background 0.2s; display: inline-block; letter-spacing: 0.01em; }
+        .btn-primary:hover { background: rgba(255,255,255,0.18); transform: translateY(-1px); }
 
-        /* Hero Crystal video panel */
+        /* Hero mesh overlay */
+        .hero-mesh {
+            position: absolute;
+            inset: 0;
+            z-index: 1;
+            pointer-events: none;
+        }
+
+        /* Hero crystal */
         .hero-crystal {
             position: absolute;
-            right: 0;
-            top: 0;
-            width: 46%;
-            height: 100%;
-            z-index: 1;
-            mask-image: linear-gradient(to left, rgba(0,0,0,1) 55%, rgba(0,0,0,0) 100%);
-            -webkit-mask-image: linear-gradient(to left, rgba(0,0,0,1) 55%, rgba(0,0,0,0) 100%);
+            right: -60px;
+            top: 50%;
+            transform: translateY(-50%);
+            width: 58%;
+            max-width: 680px;
+            z-index: 2;
+            pointer-events: none;
+            mask-image: linear-gradient(to left, rgba(0,0,0,0.95) 55%, rgba(0,0,0,0) 100%);
+            -webkit-mask-image: linear-gradient(to left, rgba(0,0,0,0.95) 55%, rgba(0,0,0,0) 100%);
         }
-        .hero-crystal img { width: 100%; height: 100%; object-fit: cover; object-position: center; display: block; }
+        .hero-crystal img { width: 100%; height: auto; display: block; }
 
         /* Core Capabilities */
         .capabilities { padding: 96px 0; border-bottom: 1px solid var(--border-color); }
@@ -113,10 +145,10 @@
         .approach-wrap { border-bottom: 1px solid var(--border-color); }
         .approach { display: grid; grid-template-columns: 0.8fr 1.2fr; }
         .approach-left { padding: 80px 40px 80px 0; }
-        .approach-title { font-size: 44px; font-weight: 400; font-family: var(--font-serif); color: var(--text-dark); line-height: 1.15; letter-spacing: -0.01em; margin-top: 20px; }
-        .approach-right { padding: 80px 0 80px 64px; border-left: 1px solid var(--border-color); }
-        .principles-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 48px 40px; }
-        .principle-icon { color: var(--accent-blue); opacity: 0.7; margin-bottom: 12px; display: block; }
+        .approach-title { font-size: 44px; font-weight: 400; font-family: var(--font-serif); color: var(--text-dark); line-height: 1.15; letter-spacing: -0.01em; margin-top: 12px; }
+        .approach-right { padding: 80px 0 80px 64px; }
+        .principles-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 36px 40px; }
+        .principle-icon { color: var(--accent-blue); opacity: 0.75; margin-bottom: 14px; display: block; }
         .principle-title { font-size: 15px; font-weight: 600; color: var(--text-dark); margin-bottom: 8px; letter-spacing: -0.01em; }
         .principle-desc { font-size: 14px; color: #666; line-height: 1.6; }
 
@@ -129,7 +161,10 @@
         .about-title { font-size: 36px; font-weight: 400; font-family: var(--font-serif); color: var(--text-dark); line-height: 1.25; letter-spacing: -0.01em; margin-top: 20px; margin-bottom: 28px; }
 
         /* CTA Footer */
-        .cta-footer { background: var(--bg-dark); color: #fff; padding: 96px 0; }
+        .cta-footer { background: var(--bg-dark); color: #fff; padding: 96px 0; position: relative; overflow: visible; }
+        .cta-crystal-overflow { position: absolute; right: 60px; top: -180px; pointer-events: none; z-index: 2; }
+        @media (max-width: 960px) { .cta-crystal-overflow { right: 20px; top: -120px; transform: scale(0.75); transform-origin: top right; } }
+        @media (max-width: 600px) { .cta-crystal-overflow { display: none; } }
         .cta-footer .container { display: grid; grid-template-columns: 1.1fr 0.9fr; align-items: center; gap: 64px; }
         .cta-headline { font-size: 48px; font-weight: 400; font-family: var(--font-serif); line-height: 1.15; letter-spacing: -0.01em; }
         .cta-headline em { color: var(--accent-muted); font-style: italic; font-family: var(--font-serif); }
@@ -150,6 +185,7 @@
         .footer-link:hover { color: #888; }
 
         @media (max-width: 960px) {
+            .hero-shell { margin: calc(-1 * var(--nav-h)) 10px 0; border-radius: 16px 16px 0 0; }
             .hero .container, .cap-grid, .approach, .about, .cta-footer .container { grid-template-columns: 1fr; gap: 40px; }
             .cap-card, .cap-card:last-child, .approach-left, .approach-right, .about-right { padding: 40px 0; border: none; }
             .about-photo-col { height: 340px; }
@@ -161,6 +197,7 @@
         }
 
         @media (max-width: 600px) {
+            .hero-shell { margin: calc(-1 * var(--nav-h)) 6px 0; border-radius: 12px 12px 0 0; }
             .container { padding: 0 20px; }
             .nav-links .nav-link { display: none; }
             .hero-title { font-size: 40px; }
@@ -177,9 +214,9 @@
             <div class="nav-logo">
                 <span class="nav-logo-crystal">
                     <svg width="13" height="15" viewBox="0 0 13 15" fill="none" xmlns="http://www.w3.org/2000/svg">
-                        <polygon points="6.5,0.5 12,5 9.5,14.5 3.5,14.5 1,5" fill="#2D2AE8"/>
+                        <polygon class="crystal-base" points="6.5,0.5 12,5 9.5,14.5 3.5,14.5 1,5"/>
                         <polygon points="6.5,0.5 12,5 6.5,3.2" fill="rgba(255,255,255,0.38)"/>
-                        <polygon points="1,5 12,5 9.5,14.5 3.5,14.5" fill="rgba(0,0,50,0.18)"/>
+                        <polygon class="crystal-shade" points="1,5 12,5 9.5,14.5 3.5,14.5"/>
                     </svg>
                 </span>
                 <span>Hagai Heshes</span>
@@ -193,19 +230,71 @@
         </div>
     </nav>
 
+    <div class="hero-shell">
     <section class="hero">
+        <svg class="hero-mesh" aria-hidden="true" viewBox="0 0 1440 640" preserveAspectRatio="xMidYMid slice" fill="none" xmlns="http://www.w3.org/2000/svg">
+            <g stroke="rgba(148,163,184,0.28)" stroke-width="0.75" fill="none">
+                <!-- Left zone — subtle, behind text -->
+                <line x1="0" y1="220" x2="320" y2="80"/>
+                <line x1="0" y1="420" x2="260" y2="310"/>
+                <line x1="150" y1="0" x2="320" y2="310"/>
+                <line x1="320" y1="80" x2="260" y2="310"/>
+                <line x1="260" y1="310" x2="320" y2="80"/>
+                <line x1="0" y1="220" x2="260" y2="310"/>
+                <!-- Centre zone -->
+                <line x1="320" y1="80" x2="620" y2="40"/>
+                <line x1="620" y1="40" x2="760" y2="200"/>
+                <line x1="320" y1="80" x2="760" y2="200"/>
+                <line x1="260" y1="310" x2="560" y2="380"/>
+                <line x1="560" y1="380" x2="760" y2="200"/>
+                <line x1="320" y1="80" x2="560" y2="380"/>
+                <line x1="560" y1="380" x2="480" y2="640"/>
+                <line x1="260" y1="310" x2="480" y2="640"/>
+                <!-- Right zone — more prominent, behind crystal -->
+                <line x1="760" y1="200" x2="1020" y2="80"/>
+                <line x1="1020" y1="80" x2="1200" y2="160"/>
+                <line x1="760" y1="200" x2="1200" y2="160"/>
+                <line x1="1200" y1="160" x2="1320" y2="0"/>
+                <line x1="1200" y1="160" x2="1440" y2="120"/>
+                <line x1="1320" y1="0" x2="1440" y2="120"/>
+                <line x1="760" y1="200" x2="980" y2="400"/>
+                <line x1="1200" y1="160" x2="980" y2="400"/>
+                <line x1="980" y1="400" x2="1440" y2="320"/>
+                <line x1="1200" y1="160" x2="1440" y2="320"/>
+                <line x1="980" y1="400" x2="1100" y2="580"/>
+                <line x1="1100" y1="580" x2="1440" y2="500"/>
+                <line x1="1440" y1="320" x2="1100" y2="580"/>
+                <line x1="480" y1="640" x2="980" y2="400"/>
+                <line x1="760" y1="200" x2="560" y2="380"/>
+                <!-- Sub-divisions -->
+                <line x1="620" y1="40" x2="980" y2="400"/>
+                <line x1="1020" y1="80" x2="980" y2="400"/>
+                <line x1="1020" y1="80" x2="1100" y2="580"/>
+            </g>
+            <g fill="rgba(148,163,184,0.35)">
+                <circle cx="320" cy="80" r="1.8"/>
+                <circle cx="620" cy="40" r="1.8"/>
+                <circle cx="760" cy="200" r="1.8"/>
+                <circle cx="1020" cy="80" r="1.8"/>
+                <circle cx="1200" cy="160" r="1.8"/>
+                <circle cx="560" cy="380" r="1.5"/>
+                <circle cx="980" cy="400" r="1.8"/>
+                <circle cx="1100" cy="580" r="1.5"/>
+            </g>
+        </svg>
         <div class="container">
             <div class="hero-left">
-                <h1 class="hero-title">The<br><em>Crystallizer</em></h1>
+                <h1 class="hero-title">The<br>Crystallizer.</h1>
                 <p class="hero-sub">You know what you've built. I make sure everyone else does too.<br>I distill what you're really about, then help you take it to market.</p>
-                <a class="btn-primary btn-primary-hero" href="#contact">Let's talk</a>
+                <a class="btn-primary btn-primary-hero" href="#contact">Let's Talk</a>
             </div>
         </div>
 
         <div class="hero-crystal">
-            <img src="images/crystal.png" alt="">
+            <img src="images/crystal.svg" alt="" width="560" height="640">
         </div>
     </section>
+    </div>
 
     <section id="services" class="capabilities">
         <div class="container">
@@ -246,7 +335,6 @@
         <div class="container" id="approach">
             <section class="approach">
                 <div class="approach-left">
-                    <p class="section-label reveal">Methodology</p>
                     <h2 class="approach-title reveal">How I<br>work</h2>
                 </div>
                 <div class="approach-right">
@@ -254,42 +342,44 @@
 
                         <!-- Q1: Speed & Action -->
                         <div class="principle stagger">
-                            <svg class="principle-icon" width="20" height="20" viewBox="0 0 20 20" fill="none" xmlns="http://www.w3.org/2000/svg">
-                                <path d="M3 10h14M13 5l5 5-5 5" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+                            <svg class="principle-icon" width="28" height="28" viewBox="0 0 28 28" fill="none" xmlns="http://www.w3.org/2000/svg">
+                                <path d="M16 3L7 16h7l-2 9 12-14h-8l2-8z" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
                             </svg>
                             <p class="principle-title">Sharp. Fast. Done.</p>
-                            <p class="principle-desc">I move fast, get to the essential quickly, and leave you with something you can actually use — not a report that collects dust.</p>
+                            <p class="principle-desc">I move fast, get to the essential quickly, and leave you with something you can actually use. Not a report that collects dust.</p>
                         </div>
 
                         <!-- Q2: Market Authority -->
                         <div class="principle stagger">
-                            <svg class="principle-icon" width="20" height="20" viewBox="0 0 20 20" fill="none" xmlns="http://www.w3.org/2000/svg">
-                                <circle cx="10" cy="10" r="7.5" stroke="currentColor" stroke-width="1.5"/>
-                                <path d="M10 2.5C10 2.5 13 5.5 13 10s-3 7.5-3 7.5M10 2.5C10 2.5 7 5.5 7 10s3 7.5 3 7.5" stroke="currentColor" stroke-width="1" opacity="0.7"/>
-                                <path d="M2.5 10h15" stroke="currentColor" stroke-width="1" opacity="0.7"/>
+                            <svg class="principle-icon" width="28" height="28" viewBox="0 0 28 28" fill="none" xmlns="http://www.w3.org/2000/svg">
+                                <circle cx="14" cy="14" r="10.5" stroke="currentColor" stroke-width="1.5"/>
+                                <path d="M14 3.5C14 3.5 18 7.5 18 14s-4 10.5-4 10.5M14 3.5C14 3.5 10 7.5 10 14s4 10.5 4 10.5" stroke="currentColor" stroke-width="1" opacity="0.8"/>
+                                <path d="M3.5 14h21" stroke="currentColor" stroke-width="1" opacity="0.8"/>
+                                <path d="M5.5 8.5h17M5.5 19.5h17" stroke="currentColor" stroke-width="0.8" opacity="0.5"/>
                             </svg>
                             <p class="principle-title">U.S. market fluency</p>
-                            <p class="principle-desc">A decade living and working there. I don't just know the market — I know how it thinks.</p>
+                            <p class="principle-desc">A decade living and working there. I don't just know the market. I know how it thinks.</p>
                         </div>
 
                         <!-- Q3: Process Iteration -->
                         <div class="principle stagger">
-                            <svg class="principle-icon" width="20" height="20" viewBox="0 0 20 20" fill="none" xmlns="http://www.w3.org/2000/svg">
-                                <path d="M15 4.5A7 7 0 1 1 5 15" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/>
-                                <path d="M15 4.5V8.5H11" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+                            <svg class="principle-icon" width="28" height="28" viewBox="0 0 28 28" fill="none" xmlns="http://www.w3.org/2000/svg">
+                                <path d="M21.5 6.5A10.5 10.5 0 1 1 6.5 21.5" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/>
+                                <path d="M21.5 6.5V12.5H15.5" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
                             </svg>
                             <p class="principle-title">Tight loops, zero friction</p>
-                            <p class="principle-desc">I work in short, intense cycles — absorb, build, get feedback, refine. No long gaps. No surprises. Always moving.</p>
+                            <p class="principle-desc">I work in short, intense cycles: absorb, build, get feedback, refine. No long gaps. No surprises. Always moving.</p>
                         </div>
 
                         <!-- Q4: Scarcity & Dedication -->
                         <div class="principle stagger">
-                            <svg class="principle-icon" width="20" height="20" viewBox="0 0 20 20" fill="none" xmlns="http://www.w3.org/2000/svg">
-                                <path d="M10 2L18 10L10 18L2 10L10 2Z" stroke="currentColor" stroke-width="1.5" fill="none"/>
-                                <circle cx="10" cy="10" r="2.5" fill="currentColor"/>
+                            <svg class="principle-icon" width="28" height="28" viewBox="0 0 28 28" fill="none" xmlns="http://www.w3.org/2000/svg">
+                                <circle cx="14" cy="14" r="3" fill="currentColor"/>
+                                <circle cx="14" cy="14" r="7" stroke="currentColor" stroke-width="1.5"/>
+                                <circle cx="14" cy="14" r="11.5" stroke="currentColor" stroke-width="1" opacity="0.45"/>
                             </svg>
                             <p class="principle-title">Few clients. Full attention.</p>
-                            <p class="principle-desc">I work with a small number of clients at a time. When I'm in, I'm fully in — not spread thin across a dozen accounts.</p>
+                            <p class="principle-desc">I work with a small number of clients at a time. When I'm in, I'm fully in. Not spread thin across a dozen accounts.</p>
                         </div>
 
                     </div>
@@ -313,6 +403,9 @@
     </div>
 
     <section id="contact" class="cta-footer">
+        <div class="cta-crystal-overflow" aria-hidden="true">
+            <img src="images/crystal.svg" width="260" height="297" alt="">
+        </div>
         <div class="container">
             <h2 class="cta-headline reveal">If this sounds like what you <em>need</em>, let's talk.</h2>
             <div class="cta-right reveal">
@@ -363,6 +456,18 @@
             ctaReveals.forEach(function (el, i) {
                 el.style.transitionDelay = (i * 0.18) + 's';
             });
+
+            // Nav dark/light — switch when hero shell leaves viewport
+            var navEl = document.querySelector('.nav');
+            var heroShell = document.querySelector('.hero-shell');
+            if (navEl && heroShell) {
+                var navStateObserver = new IntersectionObserver(function (entries) {
+                    entries.forEach(function (entry) {
+                        navEl.classList.toggle('nav--light', !entry.isIntersecting);
+                    });
+                }, { threshold: 0, rootMargin: '-' + getComputedStyle(document.documentElement).getPropertyValue('--nav-h').trim() + ' 0px 0px 0px' });
+                navStateObserver.observe(heroShell);
+            }
 
             var observer = new IntersectionObserver(function (entries) {
                 entries.forEach(function (entry) {
